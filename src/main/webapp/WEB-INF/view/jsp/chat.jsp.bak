@@ -1,0 +1,642 @@
+
+<%@page import="org.jivesoftware.smackx.vcardtemp.VCardManager"%>
+<%@page import="org.jivesoftware.smack.XMPPException.XMPPErrorException"%>
+<%@page
+	import="org.jivesoftware.smack.SmackException.NotConnectedException"%>
+<%@page
+	import="org.jivesoftware.smack.SmackException.NoResponseException"%>
+<%@page import="org.jivesoftware.smackx.pubsub.PresenceState"%>
+<%@page
+	import="org.jivesoftware.smackx.vcardtemp.provider.VCardProvider"%>
+<%@page import="org.jivesoftware.smack.provider.ProviderManager"%>
+<%@page import="org.jivesoftware.smackx.vcardtemp.packet.VCard"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="org.jivesoftware.smack.packet.RosterPacket"%>
+<%@page import="org.jivesoftware.smack.RosterListener"%>
+<%@page import="org.jivesoftware.smack.Roster"%>
+<%@page import="org.jivesoftware.smack.packet.Presence"%>
+<%@page import="org.jivesoftware.smack.RosterEntry"%>
+<%@page import="org.jivesoftware.smack.XMPPConnection"%>
+<%@page import="org.jivesoftware.smack.tcp.XMPPTCPConnection"%>
+<%@page import="java.util.Collection"%>
+<%
+	HttpSession chat_hs = request.getSession();
+	String mailid_chat = chat_hs.getAttribute("id").toString();
+	String fname_chat = chat_hs.getAttribute("fname").toString();
+	byte[] jpegBytes3 = (byte[]) chat_hs.getAttribute("img_myurl");
+	String chat_img = "chat/photo.jpg";
+	if (jpegBytes3 != null && jpegBytes3.length > 10) {
+		chat_img = new sun.misc.BASE64Encoder().encode(jpegBytes3);
+		chat_img = "data:image/jpg;base64," + chat_img;
+	}
+%>
+<script>
+/* window.onerror=function(e){alert("?")} */</script>
+  <script type='text/javascript' src='dwr/engine.js'></script>
+  <script type='text/javascript' src='dwr/interface/ReverseClass.js'></script>
+  <script type='text/javascript' src='dwr/util.js'></script>
+<!-- <script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "/bar/foo.txt", true);
+xhr.onload = function (e) {
+
+	dwr.engine.setActiveReverseAjax(true);
+};
+xhr.onerror = function (e) {
+  console.error(xhr.statusText);
+};
+xhr.send(null);
+
+</script> -->
+<script>
+/* function reverseAjx(){
+	dwr.engine.setActiveReverseAjax(true);
+}*/
+ window.onload=dwr.engine.setActiveReverseAjax(true);  
+function calltest(){
+	console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+}
+
+</script>
+<script type="text/javascript">
+	function friendRequest(from) {
+		var acceptfrom = from.split("acceptbtn");
+		$.ajax({
+			url : "${pageContext.request.contextPath}/respondFrndReq",
+			data : {
+				fromJID : acceptfrom[0],
+			},
+			success : function(data) {
+				showmsg("success",data);
+			}
+		});
+	}
+</script>
+
+<script type="text/javascript">
+	function friendDeny(from) {
+		var acceptfrom = from.split("denybtn");
+		$.ajax({
+			url : "${pageContext.request.contextPath}/denyFrndReq",
+			data : {
+				fromJID : acceptfrom[0],
+			},
+			success : function(data) {
+				showmsg("success",data);
+			}
+		});
+	}
+</script>
+
+<div class="chat_box" id="b">
+
+	<!---------/// MAIN CHAT BOX STARED HERE ------------->
+<!--  <h1 id="hh">sdf</h1> -->
+
+	<div class="chat_box_inner">
+		<div class="parent_head">
+			<div class="chat_heading">
+				<div class="chat_h_left">
+					<img src="<%=chat_img%>" id="chat_id"
+						onerror="getAltChatImage(this.id)" class="h_name" /><img
+						src="images/online_file.png" class="online_green_1">
+					<div class="chat_h_name"><%=fname_chat%></div>
+					<div class="h_drop">
+						<img src="images/down_mail.png" />
+					</div>
+				</div>
+				<div class="chat_h_right">
+					<img src="images/search_1.jpg" />
+					<div class="left_arrow"></div>
+				</div>
+			</div>
+		</div>
+		<div class="chat_inner_content">
+
+			<%
+				HttpSession hsession = request.getSession();
+				XMPPConnection connection = (XMPPTCPConnection) hsession.getAttribute("xmppConnection");
+				String loggedUser = connection.getUser().split("/")[0];
+				String url = (String) request.getAttribute("imageurl");
+				String imgsrc = url + loggedUser + ".jpg";
+				Roster roster = connection.getRoster();
+				Collection<RosterEntry> entries = roster.getEntries();
+				System.out.println("ROSTER SIZE=" + entries.size());
+				Presence presence;
+				VCard card = null;
+				ArrayList<String> frndRequests = new ArrayList<String>();
+				ArrayList<String> pendingRequests = new ArrayList<String>();
+				String stln="";
+				for (RosterEntry re : entries) {
+
+					String user = re.getUser();
+				//	System.out.println(re.getName());
+					/* String imagesrc=url+user+".jpg"; */
+					presence = roster.getPresence(re.getUser());
+				//	System.out.println(presence);
+				/* 	System.out.println("Buddy==" + re.getName() + " & Status= " + re.getStatus() + " User=" + re.getUser()
+							+ " type=" + re.getType() + "Mode=" + presence.getMode());
+					System.out.println(
+							"before if " + user + " is offline type= " + presence.getType() + " Mode=" + presence.getMode()); */
+					RosterPacket.ItemType type = re.getType();
+%>
+
+<script type="text/javascript">
+console.log('<%=re.getUser()%> having type = <%=type%> and status = <%=re.getStatus()%>');
+</script>
+<% 					
+
+System.out.println("this is typeeeeeeeeeeeeeeeeeeeeeeee   "+re.getUser()+" status = "
+		+ re.getStatus()+" " +(re.getStatus()!=null&&re.getStatus()==RosterPacket.ItemStatus.subscribe) + " : "+type+" "+re.getType().equals(RosterPacket.ItemType.none));
+
+
+					
+					
+					if (re.getStatus() == null && type == RosterPacket.ItemType.both) {
+					//	System.out.println("iiiiiiiiiiiiiifffffffffffffffffff");
+						try {
+							//  System.out.print(connection+"asdflkjasdfklsdajfalksjdflkasjdfkls");
+							boolean cards = VCardManager.isSupported(re.getUser(), connection);
+							card = new VCard();
+							//System.out.println("is supported .................... " + cards);
+							card.load(connection, re.getUser()); //load Buddy's VCard
+						} catch (Exception e) {
+							//e.printStackTrace();
+						}
+						if (card != null) {
+							/* System.out.println("vcard fname----vvvvvvvvvvvvvvvv " + card.getFirstName());
+							System.out.println("vcard lname----vvvvvvvvvvvvvvvv " + card.getLastName());
+							System.out.println("vcard avatar----vvvvvvvvvvvvv " + card.getAvatar());
+							System.out.println("vcard nickname----vvvvvvvvvvvvvvvv " + card.getNickName());
+							System.out.println("vcard email home----vvvvvvvvvvvvvvvv " + card.getEmailHome());
+							System.out.println("vcard email work----vvvvvvvvvvvvv " + card.getEmailWork());
+							System.out.println("vcard avatar mime type----vvvvvvvvvvvvv " + card.getAvatarMimeType());
+							System.out.println("vcard jabberid----vvvvvvvvvvvvv " + card.getJabberId()); */
+						}
+						if (presence.getType() == Presence.Type.available) {
+							Presence.Mode mode = presence.getMode();
+						//	System.out.println(user + " is online");
+			%>
+
+			<div class="cheat_row" id="<%=re.getUser()%>name">
+
+				<div class="small_images">
+					<img src="chat/photo.jpg" class="user_images" />
+
+					<div id="<%=re.getUser() %>">
+					<%
+						if (mode == Presence.Mode.available || mode == null) {
+					%>
+					<img src="chat/green.png" class="online_green" id="<%=re.getUser()%>presence">
+
+					<%
+						}
+									if (mode == Presence.Mode.away) {
+					%>
+					<img src="chat/busy.png" class="online_green" id="<%=re.getUser()%>presence">
+
+
+					<%
+						}
+									if (mode == Presence.Mode.dnd) {
+					%>
+					<img src="chat/block.png" class="online_green" id="<%=re.getUser()%>presence">
+
+					<%
+						}
+					%></div>
+				</div>
+				<div class="contact_information">
+				<p>
+
+				<strong> <%
+ 				if (card != null && card.getNickName() != null) {
+ 					%> <%=card.getNickName()%>
+							<%
+					} else {
+						if (re.getName() != null) {
+						%> <%=re.getName()%> <%
+ 					}
+ 				}
+				 %>
+				</strong><br> <span><%=re.getUser()%></span>
+				</p>
+				</div>
+
+			</div>
+			<%
+				} else {
+						//	System.out.println(user + " is offline type=" + presence.getType());
+			%>
+
+			<div class="cheat_row" id="<%=re.getUser()%>name">
+
+				<div class="small_images">
+					<img src="chat/photo.jpg" class="user_images" /> 
+					<div id="<%=re.getUser() %>">
+					<img
+						src="chat/offline.png" class="online_green" /></div>
+				</div>
+				<div class="contact_information">
+					<p>
+						<strong> 
+									<%
+								 	if (card != null && card.getNickName() != null) {
+									%> 
+									<%=card.getNickName()%>
+									<%
+									} else {
+									if (re.getName() != null) {
+									%> <%=re.getName()%> <%
+								 	}
+					 				}
+								 	%>
+						</strong><br> <span><%=re.getUser()%></span>
+					</p>
+				</div>
+			</div>
+			<%
+				}
+						stln=stln+re.getUser()+",";
+					} else if (re.getStatus()==null&&re.getType().equals(RosterPacket.ItemType.to)) {
+				//		System.out.println("pending");
+						pendingRequests.add(user); 
+					}else if(re.getStatus()!=null&&re.getStatus()==RosterPacket.ItemStatus.subscribe) {
+				//		System.out.println("111111111else if"   );
+						frndRequests.add(user); 
+					}
+					
+				}
+			%>
+			<input type="hidden" id="roasterListing" value="<%=stln%>" />
+			
+			<%
+			
+				for (String frnds : frndRequests) {
+			%>
+				<div class="cheat_row1" id="<%=frnds%>name">
+
+				<div class="small_images">
+					<img src="chat/photo.jpg" class="user_images" /> 
+					<div id="<%=frnds %>">
+					<img
+						src="chat/offline.png" class="online_green" /></div>
+				</div>
+				<div class="contact_information">
+					<p>
+						<strong> 
+							<%=frnds%>		
+						</strong><br> <span style="color: #b00;">Invitation sent</span>
+					</p>
+				</div>
+			</div>
+
+
+<%-- 
+			<div class="cheat_row" style="margin-bottom: 10px;" >
+				<div class="small_images">
+					<img class="user_images" src="chat/photo.jpg" /> <a href="#"
+						id="<%=frnds + "name"%>"><p>
+							<strong><%=frnds%></strong>
+						</p></a><br />
+				</div>
+				
+
+			</div> --%>
+
+			<%
+				}
+			%>
+			<%
+			
+				for (String frnds : pendingRequests) {
+			%>
+
+				<div class="cheat_row1" >
+
+				<div class="small_images">
+					<img src="chat/photo.jpg" class="user_images" /> 
+					<div id="<%=frnds %>">
+					<img
+						src="chat/offline.png" class="online_green" /></div>
+				</div>
+				<div class="contact_information">
+					<p><strong> 
+							<%=frnds%>		
+						</strong><br>
+							<a onclick="friendRequest(this.id)" id="<%=frnds + "acceptbtn"%>" style="cursor: pointer;">
+					<!-- <img src="images/accept.png"  > -->
+					Accept
+				</a> <a onclick="friendDeny(this.id)" id="<%=frnds + "denybtn"%>"   style="cursor: pointer;margin-left: 3px;"> <!-- <img src="images/reject.png"  > -->Reject
+				</a>
+					</p>
+				</div>
+			</div>
+			
+
+			<%
+				}
+			%>
+
+		</div>
+	</div>
+	<!---------------//// CHAT SINGH IN ----------->
+	<div class="chat_sign_box">
+		<div class="chat_sign_images">
+			<img src="images/chat-4-xxl.png" />
+		</div>
+		<div class="chat_sign_1_box">Sign in</div>
+	</div>
+	<!-----------------//// CHAT SINGH IN END ------->
+
+</div>
+
+</div>
+</div>
+
+<!--------/// LEFT MID CONTENT END HERE -------------->
+
+<!-------/// LEFT BOTTOM ICON STARED HERE --->
+<!--  <div id="mailview-bottom2" class="uibox bottom_mail">
+                            <ul class="background_bottom bootom_icon_ul">
+                                <li><a href="#"><img src="images/bootom_icon_1.png" class="icon1"></a></li>
+                                <li><a href="#"><img src="images/bootom_icon_2.png" class="icon_2"></a></li>
+                                <li><a href="#"><img src="images/bootom_icon_3.png" class="icon_3"></a></li>
+                                <li><a href="#"><img src="images/bootom_icon_4.png" class="icon_4"></a></li>
+                                <li><a href="#"><img src="images/bootom_icon_5.png"></a></li>
+                                <li><a href="#"><img src="images/bootom_icon_6.png"></a></li>
+                                <div class="clear"></div>
+                            </ul>
+                            <div class="clear"></div>
+                        </div> -->
+
+<!-------/// LEFT BOTTOM ICON END HERE --->
+</div>
+<!--------------///// WHEN LEFT IS OPEN End HERE ----->
+
+
+<!-----------/// LEFT PANNEL END HERE ------->
+
+<!-------/// LEFT PANNEL WHEN IT CLOSE ------>
+<!-- <div class="left_close">
+                    <div class="top_left"> <a href="#">
+                            <div class="top_right_icon" id="show_left"> <img src="images/next_mail.png" /> </div>
+                        </a> </div>
+                    <div class="mid_close_content">
+                        <ul>
+                            <li> <a href="#"><img src="images/inbox_blue.png" /></a> </li>
+                            <li> <a href="#"><img src="images/sent.png" /></a> </li>
+                            <li> <a href="#"><img src="images/delet.png" /></a> </li>
+                            <li> <a href="#"><img src="images/all_folder.png" /></a> </li>
+                        </ul>
+                    </div>
+                    <div id="mailview-bottom1" class="uibox close_bottom">
+                        <ul>
+                            <li><a href="#"><img src="images/photo.jpg" /></a></li>
+
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <li><a href="#"><img src="images/blank_man.jpg" /></a></li>
+                            <div class="clear"></div>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </div> -->
+
+
+
+<script type="text/javascript">
+	function getAltChatImage(imgid) {
+		var pic = document.getElementById(imgid);
+		pic.src = "chat/photo.jpg"
+	}
+</script>
+
+  <script type="text/javascript">
+	$('#contact_cnt_div_full table tbody tr')
+
+	$(document.body).on(
+			'click',
+			'.cheat_row',
+			function() {
+
+				var username = $(this).attr('id');
+				// alert(getIdChat);
+				var getImagePath = $(this).children('.small_images').children(
+						'.online_green').attr('src');
+				//alert(getImagePath);
+				//});
+
+				//function getChatBox(username) {
+				var box = null;
+				var chatname = username.split("name");
+				var userchatid = username.split("@");
+
+				/* var imagesrc = document.getElementById(chatname[0] + "presence").src;
+				var imagesp = imagesrc.split("images/"); */
+				var image = getImagePath; //imagesp[1];
+
+				//alert(getImagePath)
+				var id = "#" + userchatid[0] + "open_chat_box";
+				//alert(chatname[0]);
+
+				//var title_name_apppend = $('.title_name').html();
+				//alert(title_name_apppend);
+
+				// TEST1
+
+				// TEST1
+
+				var get_length = id.length;
+
+				var Toopen = false;
+				try {
+					$(".title_name").each(function(index, element) {
+
+						if ($(this).text() == chatname[0]) {
+
+							//return false;
+							Toopen = true;
+
+						} else {
+
+							//alert('This is Not match');
+							//msgElement;
+
+						}
+					});
+				} catch (err) {
+				}
+
+				if (!Toopen) {
+					$("#appendchatdiv").append(
+							"<div id='"+userchatid[0]+"open_chat_box'></div>");
+					//	alert($('#appendchatdiv').html());
+
+					$(id).append("<div id='"+userchatid[0]+"chat_div'></div>");
+
+					var chatdivid = "#" + userchatid[0] + "chat_div";
+					box = $(chatdivid).chatbox(
+							{
+
+								/*
+									unique id for chat box
+								 */
+								id : "me",
+								user : {
+									key : "value"
+								},
+								/*
+									Title for the chat box
+								 */
+								title : chatname[0],
+								imagenm : image,
+								/*
+									messageSend as name suggest,
+									this will called when message sent.
+								 */
+								messageSent : function(id, user, msg) {
+									$(chatdivid)
+											.chatbox("option", "boxManager")
+											.addMsg(id, msg);
+								}
+
+							});
+
+				}
+				$(".ui-widget-header").css("background-image", "none");
+				$(".ui-widget-header").css("background",
+						$("#hid_mail_bgColor").val());
+				$(".ui-widget-header").css("border",
+						"1px solid " + $("#hid_mail_bgColor").val());
+				//	}
+
+			});
+</script>  
+<!-------------------/// FOR TAB ONLY --------------------->
+<style>
+
+/*---- NEW CSS FOR CHAT STARED HERE ---------------*/
+.main_chat_box {
+	height: 316px;
+	position: absolute;
+	overflow: hidden;
+	bottom: 0px;
+	right: 0px;
+	z-index: 1;
+}
+
+#head {
+	position: relative;
+}
+
+.overflow_chat {
+	/*background: #000;*/
+	float: left;
+	position: absolute;
+	left: 0px;
+	z-index: 0;
+	bottom: 0px;
+}
+
+.inner_chat_box { /*background:#f00;*/
+	padding: 10px;
+	float: right;
+	z-index: 3;
+	position: relative;
+	/* padding-left: 200px; */
+	bottom: 0px;
+	/* position: absolute; */
+	overflow: hidden;
+	height: 300px;
+	padding-top: 20px;
+	right: 0px;
+}
+
+.ui-chatbox {
+	margin-left: 18px;
+}
+
+.ui-widget:last-child {
+	margin-left: 0px;
+}
+
+.main_inner_box {
+	position: relative;
+	height: 316px;
+}
+
+.overflow_info {
+	height: 252px;
+	width: 190px;
+	/*background: #f00;*/
+	position: relative;
+	z-index: 0;
+}
+
+.overflow_info_content {
+	height: 221px;
+	width: 100%;
+	display: none;
+	background: #fff;
+	border: 1px solid #ccc;
+}
+
+.overflow_info_bottom {
+	height: 28px;
+	background: #DFDFDF;
+	cursor: pointer;
+	position: absolute;
+	bottom: 0px;
+	right: -2px;
+	display: none;
+	width: 64px;
+	border: 1px solid #ccc;
+}
+
+.count_overflow {
+	width: 26px;
+	float: right;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.overflow_close {
+	background: url(images/close.png);
+	height: 11px;
+	width: 11px;
+	cursor: pointer;
+	float: right;
+	margin-right: 15px;
+}
+
+.small_row {
+	padding-left: 6px;
+	padding-top: 5px;
+	height: 16px;
+}
+
+.overflow_info_bottom>img {
+	width: 23px;
+	/* display: block; */
+	margin: 0 auto;
+	margin-top: 7px;
+	margin-left: 11px;
+}
+
+.small_row>span {
+	float: left;
+}
+
+.minimiz {
+	float: right;
+	position: relative;
+	top: 264px;
+}
+/*------- NEW CSS FOR CHAT END HERE --------------*/
+</style>
+

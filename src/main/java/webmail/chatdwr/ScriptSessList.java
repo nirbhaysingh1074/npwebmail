@@ -24,19 +24,19 @@ public class ScriptSessList {
 			
 			@Override
 			public void sessionDestroyed(ScriptSessionEvent ev) {
-				System.out.println("Script Session destroyed..........");
+			//	System.out.println("Script Session destroyed..........");
 			}
 			
 			@Override
 			public void sessionCreated(ScriptSessionEvent ev) {
-				System.out.println("Script Session Created..........");
+				//System.out.println("Script Session Created..........");
 				ServletRequestAttributes sra=((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes());
 				HttpSession httpSession=sra.getRequest().getSession();
 				XMPPConnection xmppConnection=(XMPPTCPConnection)httpSession.getAttribute("xmppConnection");
 				String [] loginUser=xmppConnection.getUser().split("/");
 				ScriptSession session=ev.getSession();
 				session.setAttribute("scriptAttribute", loginUser[0]);
-				System.out.println("attribute name==========="+session.getAttribute("scriptAttribute"));
+			//	System.out.println("attribute name==========="+session.getAttribute("scriptAttribute"));
 			}
 		};
 		manager.addScriptSessionListener(listener);

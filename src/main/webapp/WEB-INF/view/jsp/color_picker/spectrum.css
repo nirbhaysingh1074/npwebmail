@@ -1,5 +1,5 @@
 /***
-Spectrum Colorpicker v1.6.0
+Spectrum Colorpicker v1.7.0
 https://github.com/bgrins/spectrum
 Author: Brian Grinstead
 License: MIT
@@ -373,7 +373,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
     border: solid 1px #91765d;
     background: #eee;
     color: #333;
-    vertical-align: middle;margin-left: 17px;
+    vertical-align: middle;
 }
 .sp-replacer:hover, .sp-replacer.sp-active {
     border-color: #F0C49B;
@@ -392,14 +392,14 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
     font-size:10px;
 }
 .sp-preview {
-    position:relative;
-    width:25px;
-    height: 20px;
-    border: solid 1px #222;
-    margin-right: 5px;
-    float:left;
-    z-index: 0;
-}
+ position: relative;
+ width: 144px;
+ height: 20px;
+ border: solid 1px #222;
+ margin-right: 5px;
+ float: left;
+ z-index: 0;
+} 
 
 .sp-palette {
     *width: 220px;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import webmail.webservice.client.FolderClient;
+import webmail.webservice.client.WebmailClient;
 import webmail.wsdl.GetWebmailMoveTrashResponse;
 import webmail.wsdl.RemoveWebmailFlagResponse;
 import webmail.wsdl.SetWebmailFlagResponse;
@@ -21,11 +21,11 @@ import webmail.wsdl.SetWebmailFlagResponse;
 public class MoveToTrashController {
 	
 	@Autowired
-	private FolderClient folderClient;
+	private WebmailClient webmailClient;
 	
 	@RequestMapping(value = "/webmailMoveToTrash", method = RequestMethod.GET)
 	@ResponseBody
-	public String mailFlagAction(ModelMap map, Principal principal, HttpServletRequest request) 
+	public synchronized String mailFlagAction(ModelMap map, Principal principal, HttpServletRequest request) 
 	{
 		boolean status=false;
 		String fldrnm= request.getParameter("folder");
@@ -35,9 +35,11 @@ public class MoveToTrashController {
 		String id=(String)hs.getAttribute("id");
 		String pass=(String)hs.getAttribute("pass");
 		String port=(String)hs.getAttribute("port");
+		String active_folder=(String)hs.getAttribute("active_folder");
 		
-		GetWebmailMoveTrashResponse mtot=folderClient.moveToTrashRequest(host, port, id, pass, fldrnm, uid);
+		GetWebmailMoveTrashResponse mtot=webmailClient.moveToTrashRequest(host, port, id, pass, fldrnm, uid);
 		status=mtot.isMoveTrashStatus();
+	
 		return ""+status;
 	}
 	

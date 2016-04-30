@@ -14,14 +14,67 @@
 	</properties>
 
 	<dependencies>
+	
+	
+	
+		<dependency>
+	<groupId>redis.clients</groupId>
+	<artifactId>jedis</artifactId>
+	<version>2.8.1</version>
+</dependency>
+		
+<dependency>
+  <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+  <groupId>org.jsoup</groupId>
+  <artifactId>jsoup</artifactId>
+  <version>1.8.3</version>
+</dependency>
+<!-- for charset -->
+	<dependency>
+	<groupId>net.freeutils</groupId>
+	<artifactId>jcharset</artifactId>
+	<version>2.0</version>
+</dependency>
+	
+	
+	<dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-mapper-asl</artifactId> 
+        <version>1.9.13</version>
+    </dependency>
+	
+	<dependency>
+	<groupId>com.googlecode.json-simple</groupId>
+	<artifactId>json-simple</artifactId>
+	<version>1.1.1</version>
+</dependency>
+	
+		<dependency> 
+    <groupId>javax.json</groupId> 
+    <artifactId>javax.json-api</artifactId> 
+    <version>1.0</version> 
+</dependency> 
+<dependency>
+	<groupId>org.glassfish</groupId>
+	<artifactId>javax.json</artifactId>
+	<version>1.0-b02</version>
+</dependency>
+	
 		<dependency>
 			<groupId>wsdl4j</groupId>
-			<artifactId>wsdl4j</artifactId> 
+			<artifactId>wsdl4j</artifactId>  
 			<version>1.6.3</version>
 		</dependency>
 
+<dependency>
+	<groupId>commons-lang</groupId>
+	<artifactId>commons-lang</artifactId>
+	<version>2.3</version>
+</dependency>
+
+
 		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
+			<groupId>com.googlecode.json-simple</groupId> 
 			<artifactId>json-simple</artifactId>
 			<version>1.1</version>
 		</dependency>
@@ -31,7 +84,7 @@
 			<version>1.1.3</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-collections</groupId>
+			<groupId>commons-collections</groupId> 
 			<artifactId>commons-collections</artifactId> 
 			<version>3.2.1</version>
 		</dependency>
@@ -149,6 +202,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
 		</dependency>
 
 		<!-- Expression Language (depends on spring-core) Define this if you use 
@@ -400,6 +459,11 @@
 		<!-- Smack Chat dependencies end -->
 
 
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>2.10.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -408,57 +472,87 @@
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
 				<artifactId>maven-jaxb2-plugin</artifactId> 
 				<version>0.11.0</version>
-				<executions>
-					<execution>
+				<executions> 
+					<execution>    
 						<goals>
 							<goal>generate</goal>
 						</goals>
 					</execution>
-				</executions>
-				<configuration>
+				</executions> 
+				<configuration> 
 					<schemaLanguage>WSDL</schemaLanguage>
 					<generatePackage>webmail.wsdl</generatePackage>
 					<forceRegenerate>true</forceRegenerate>
 					<schemas>
+					<schema>
+							<url>http://localhost:11235/ws/calendar.wsdl</url>  
+						</schema> 
+					<schema> 
+							<url>http://localhost:11235/ws/webmailContactCreate.wsdl</url>
+						</schema>
+					 <schema> 
+							<url>http://localhost:11235/ws/webmailLDAPAtt.wsdl</url>       
+						</schema> 
 						<schema>
-							<url>http://localhost:8080/ws/webmailFolder.wsdl</url> 
+							<url>http://localhost:11235/ws/webmailTask.wsdl</url>  
+						</schema> 
+					<schema>
+							<url>http://localhost:11235/ws/webmailSearch.wsdl</url>  
+					</schema>
+					<schema>
+							<url>http://localhost:11235/ws/webmailAttachment.wsdl</url>  
+						</schema>
+						 <schema>
+							<url>http://localhost:11235/ws/webmailFolder.wsdl</url>  
+						</schema>
+						 <schema>
+							<url>http://localhost:11235/ws/webmailQuota.wsdl</url>   
 						</schema>
 						<schema>
-							<url>http://localhost:8080/ws/webmailQuota.wsdl</url>   
+							<url>http://localhost:11235/ws/webmailAuthentication.wsdl</url>  
 						</schema>
 						<schema>
-							<url>http://localhost:8080/ws/webmailAuthentication.wsdl</url>  
+							<url>http://localhost:11235/ws/webmailImapquota.wsdl</url> 
 						</schema>
 						<schema>
-							<url>http://localhost:8080/ws/webmailImapquota.wsdl</url> 
+							<url>http://localhost:11235/ws/webmailEmailcount.wsdl</url>   
 						</schema>
 						<schema>
-							<url>http://localhost:8080/ws/webmailEmailcount.wsdl</url>   
+							<url>http://localhost:11235/ws/webmailInbox.wsdl</url>  
 						</schema>
 						<schema>
-							<url>http://localhost:8080/ws/webmailInbox.wsdl</url> 
+							<url>http://localhost:11235/ws/webmailMoveTrash.wsdl</url>    
 						</schema>
+						<!-- <schema>
+							<url>http://localhost:11235/ws/webmailMoveJunk.wsdl</url>    
+						</schema> -->
 						<schema>
-							<url>http://localhost:8080/ws/webmailMoveTrash.wsdl</url> 
-						</schema>
-						<schema>
-							<url>http://localhost:8080/ws/webmailFlagAction.wsdl</url> 
+							<url>http://localhost:11235/ws/webmailFlagAction.wsdl</url> 
 						</schema>
 						<schema> 
-							<url>http://localhost:8080/ws/webmailSeenAction.wsdl</url>  
+							<url>http://localhost:11235/ws/webmailSeenAction.wsdl</url>  
 						</schema>
 						<schema> 
-							<url>http://localhost:8080/ws/webmailContentDisplay.wsdl</url>    
+							<url>http://localhost:11235/ws/webmailContentDisplay.wsdl</url>      
 						</schema> 
 						<schema> 
-							<url>http://localhost:8080/ws/webmailAttachmentDownload.wsdl</url>    
+							<url>http://localhost:11235/ws/webmailAttachmentDownload.wsdl</url>    
 						</schema> 
 						<schema> 
-							<url>http://localhost:8080/ws/webmailCompose.wsdl</url>      
+							<url>http://localhost:11235/ws/webmailCompose.wsdl</url>    
+						</schema> 
+					   
+						<schema> 
+							<url>http://localhost:11235/ws/webmailLDAPModifyAtt.wsdl  </url>       
 						</schema> 
 						<schema> 
-							<url>http://localhost:8080/ws/webmailLDAPAtt.wsdl</url>     
-						</schema> 
+							<url>http://localhost:11235/ws/webmailLdapUserDirectory.wsdl</url>        
+						</schema>
+						<schema>
+							<url>http://mail.silvereye.in:8080/ws/documentModule.wsdl</url> 
+						</schema>  
+						
+						
 					</schemas>
 				</configuration>
 			</plugin>
@@ -489,7 +583,7 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId> 
 				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>

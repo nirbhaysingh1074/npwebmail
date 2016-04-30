@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="images/favicon.ico"/>
 <link type="text/css" rel="stylesheet" href="css/style.css"/>
 <link type="text/css" rel="stylesheet" href="css/blue.css"/>
@@ -17,6 +17,10 @@
 <script src="js/calender_js.js"></script>
 <link type="text/css" rel="stylesheet" href="css/calender_css.css" />
 <!---------/// SCRIPT END ----------------->
+<!------/// SCRIPT FOR CANTACT---------->  
+<script src="js/contact_js.js"></script>
+<link type="text/css" rel="stylesheet" href="css/contact_css.css" />
+<!---------/// SCRIPT CANTACT END ----------------->
 
 <style>
 .vsplitbar {
@@ -54,6 +58,15 @@
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
 }
+/*---------------- CSS FOR TABLE ------*/
+table.heading_guest {width: 95%;border-spacing: 0px;}
+.guest_content_11{height: 149px;overflow: auto;padding-right: 15px;}
+table.append_guest {width: 95%;border-spacing: 0px;}
+.guest_td{width: 73px;}
+.close_guest >img { display:block; margin:0 auto;}
+.close_guest_1 >img{margin: 0 auto;
+display: block;}
+.heading_guest >tbody >tr >td >span{ float:left;}
 </style>
 </head>
 <body>
@@ -168,7 +181,7 @@
           <div class="my_claender">My calendars</div>
           <div class="my_calender_content">
             <ul>
-              <li>
+              <li class="my_con_active">
                 <div class="color_calender"></div>
                 <span>Hariom Srivastava</span>
                 <div class="cal_option"><img src="images/cal-open.png" /></div>
@@ -253,11 +266,35 @@
                   <ul>
                     <li><a href="#">Calendar settings</a></li>
                     <li><a href="#">Edit notifications</a></li>
-                    <li><a href="#">Share this Calendar</a></li>
-                    <li><a href="#">Create event on this calendar</a></li>
+                    <li class="mange_sharing"><a href="#">Manage Sharing</a></li>
+                    <li class="create_event"><a href="#">Create event on this calendar</a></li>
                     <li><a href="#">Display only this Calendar</a></li>
-                    <li class="calender_color"></li>
-                    <li><a href="#">Choose custom color</a></li>
+                    <li class="calender_color">
+                         <div class="color_1 color_find"><span> &#x2713 </span></div>
+                         <div class="color_2 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_3 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_4 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_5 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_6 color_find"> <span> &#x2713 </span></div>
+                         <div class="clear"></div>
+                         <div class="color_7 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_8 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_9 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_10 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_11 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_12 color_find"> <span> &#x2713 </span></div>
+                    
+                    
+                    </li>
+                    <li class="custom_color">
+                       <table>
+                          <tr>
+                              <td><input type="text" class="custom" /></td>
+                          </tr>
+                       </table>
+                    
+                    </li>
+                    <li class="choose_custom"><a href="#">Choose custom color</a> <span class="custom_check"> &#x2713 </span></li>
                   </ul>
                   <div class="clear"></div>
                 </div>
@@ -1065,10 +1102,10 @@
         <div class="first_cal_option"><div class="create_cal_icon"></div> Create Calender </div>
         <!------/// FIRST CALENDER END HERE --------> 
         <!---/// SECOND CALENDER ------>
-        <div class="first_cal_option_1"><div class="create_cal_icon_1"></div>Create Task</div>
+        <div class="first_cal_option_1 hide_this"><div class="create_cal_icon_1"></div>Create Task</div>
         <!------/// SECOND CALENDER END HERE --------> 
         <!---/// THIRD CALENDER ------>
-        <div class="first_cal_option_2"><div class="create_cal_icon_2"></div>Create Event</div>
+        <div class="first_cal_option_2 create_event"><div class="create_cal_icon_2"></div>Create Event</div>
         <!------/// THIRD CALENDER END HERE --------> 
         
       </div>
@@ -1804,7 +1841,7 @@
              <li class="gen_opt gen_active"><div class="gen_icon"></div>General options</li>
              <li class="repe"><div class="repe_icon"></div>Repeat</li>
              <li class="remind"><div class="reminder_icon"></div>Reminders</li>
-             <li class="work_g"><div class="working_icon"></div>Workgroup</li>
+             <li class="work_g"><div class="working_icon"></div>Invite Guest</li>
          </ul>
   
   
@@ -1841,15 +1878,35 @@
               <option>JJJ</option>
             </select></td>
         </tr>
+       <tr >
+                   <td>Privacy</td>
+                   <td>
+                              <select>
+                                    <option>Public</option>
+                                    <option>Private</option>
+                                    <option>Confidential</option>
+                              </select>
+                   </td>
+                </tr>
+                <tr>
+                   <td>Show this time as</td>
+                   <td>
+                            <select>
+                                  <option>Busy</option>
+                                  <option>Free</option>
+                            </select>
+                   
+                   </td>
+        </tr>
         <tr>
           <td>Start date</td>
           <td><input type="date" />
-            <input type="text" class="date_stared" /></td>
+            <input type="text" class="date_stared" placeholder="Show Time Here" /></td>
         </tr>
         <tr>
           <td>End date</td>
           <td><input type="date" />
-            <input type="text" class="date_stared" /></td>
+            <input type="text" class="date_stared" placeholder="Show Time Here" /></td>
         </tr>
         <tr>
           <td>All day</td>
@@ -1929,30 +1986,34 @@
     <div class="workgroup_cal">
              <table>
                 <tr >
-                   <td>Privacy</td>
-                   <td>
-                              <select>
-                                    <option>Public</option>
-                                    <option>Private</option>
-                                    <option>Confidential</option>
-                              </select>
+                   <td>Add Guest </td>
+                   <td colspan="2">
+                            <input type="text" class="add_guest_name" />
                    </td>
                 </tr>
                 <tr>
-                   <td>Show this time as</td>
-                   <td>
-                            <select>
-                                  <option>Busy</option>
-                                  <option>Free</option>
-                            </select>
+                   <td colspan="3">
+                           <div class="add_guest">Add</div>
                    
                    </td>
                 </tr>
-                <tr>
-                   <td></td>
-                   <td></td>
+                </table>
+           <div class="add_guest_content">
+                <table class="heading_guest">
+                <tr class="add_name">
+                   <td ><input type="checkbox" class="select_guest"  /> <span>Name Here</span></td>
+                   <td><span><img src="images/cont_imag.png"/>Email Guest</span><div class="close_guest_1"><img src="images/tool.png" /></div></td>
                 </tr>
-             </table>
+                </table>
+                     <div class="guest_content_11">
+                              <table class="append_guest">
+                                      <tr class="add_name row_guest">
+                                         <td colspan="2" ><input type="checkbox" class="select_guest_1" /> <span>Test Name Here</span></td>
+                                         <td><div class="close_guest"><img src="images/tool.png" /></div></td>
+                                      </tr>
+                           </table>
+                     </div>
+             </div>
     
     
     </div>
@@ -1974,16 +2035,30 @@
 <!----/// CONTENT STRED HERE ------>
 <div class="inn_con_cal">
 
-  <table>
-     <tr>
+        <table>
+     <tbody><tr>
           <td>Display Name</td>
-           <td><input type="text" class="dis_name" /></td>
+           <td><input type="text" class="dis_name"></td>
      </tr>
      <tr>
           <td>Display Color</td>
-           <td><input type='text' id='custom' /></td>
+           <td class="new_cal_color">  <div class="color_1 color_find"><span> &#x2713 </span></div>
+                         <div class="color_2 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_3 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_4 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_5 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_6 color_find"> <span> &#x2713 </span></div>
+                         <div class="clear"></div>
+                         <div class="color_7 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_8 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_9 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_10 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_11 color_find"> <span> &#x2713 </span></div>
+                         <div class="color_12 color_find"> <span> &#x2713 </span></div></td>
      </tr>
-  </table>
+  </tbody></table>
+        
+
 
 </div>
   <div class="clear"></div>
@@ -1995,6 +2070,63 @@
 
 
 </div>
+
+<!----------/// CALENDER SHARE POP STARED HERE ----------->
+<div class="sharing_mange">
+   <h1>Manage Sharing - Delegate all 10 Calender in My Calender <div class="mange_can_top">X</div></h1>
+   <div class="table_append">
+                   <table class="append_tr">
+                       <tr>
+                           <td colspan="2">Link to share (only accessible by collaborators)</td>
+                       </tr>
+                       <tr>
+                           <td colspan="2"><input type="text"  class="link_share"/></td>
+                       </tr>
+                       <tr class="share_bottom">
+                           <td colspan="2">Who has access</td>
+                       </tr>
+                       <tr>
+                           <td>Hari Om Srivastava (you)<span class="email_share">hari@silvereye.co</span></td>
+                           <td class="text_right">Is Owner</td>
+                       </tr>
+                       <tr class="share_bottom">
+                           <td colspan="2">Invite people:</td>
+                       </tr>
+                       <tr>
+                           <td><input type="text"  class="initive_people" /></td>
+                           <td>
+                              <div class="can_edit">
+                                      <div class="share_more">Add More</div>
+                                      <div class="can_edite">
+                                           <select>
+                                               <option>Can View </option>
+                                               <option>Can Edit </option>
+                                               <option>Can Mange </option>
+                                           </select>
+                                      </div>
+                                     
+                              </div>
+                          </td>
+                       </tr>
+                   </table>
+                   <div class="clear"></div>
+   
+        </div>
+          <table>
+            <tr>
+           <td colspan="2"><input type="checkbox" />Notify people via email<a href="#">Add message</a></td>
+          </tr>
+   </table> 
+                 <div>
+                       <div class="your_self"><input type="checkbox"/><a href="#">Send a copy to myself </a></div>
+                       <div class="cancel_share mange_can">Cancel</div>
+                       <div class="send_share">Send</div>
+            
+                 </div>
+                 
+                 
+</div>
+<!------------/// CALENDER SHARE POP END HERE ------------->
 
 <!-----------/// CREATE THE CALENDER END HERE ---------------->
   <div class="web_dialog_overlay"></div>

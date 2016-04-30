@@ -138,6 +138,7 @@
     function paletteTemplate (p, color, className, opts) {
         var html = [];
         for (var i = 0; i < p.length; i++) {
+			
             var current = p[i];
             if(current) {
                window.tiny = tinycolor(current);
@@ -230,7 +231,7 @@
             clearButton = container.find(".sp-clear"),
             chooseButton = container.find(".sp-choose"),
             toggleButton = container.find(".sp-palette-toggle"),
-            isInput = boundElement.is("input"),
+            isInput = boundElement.is("input.custom"),
             isInputTypeColor = isInput && inputTypeColorSupport && boundElement.attr("type") === "color",
             shouldReplace = isInput && !flat,
             replacer = (shouldReplace) ? $(replaceInput).addClass(theme).addClass(opts.className).addClass(opts.replacerClassName) : $([]),
@@ -367,7 +368,28 @@
 
             chooseButton.text(opts.chooseText);
             chooseButton.bind("click.spectrum", function (e) {
-				//alert('Hi');
+//				alert('Hicolor');
+//				//////////////////color changing code for calendar
+//				$.ajax({
+//			        type:"get",
+//			        data:{
+//			        	'calendarfilename':$('#hid_cal_file_name').val(),
+//			        	'changedcolor':$('.sp-preview-inner').css('background-color')
+//			        },
+//			        url:"changecalendarcolor",
+//			        async:true,
+//			        dataType: "json",
+//			        success: function(data){
+//			        	alert(data);
+//			        	if(data)
+//			        		{
+//			        		
+//			        		location.href="/webmail/calendar";
+//			        		}
+//			        }
+//			        	
+//			        });
+				///////////end of code for color change
 				var find_color = container.find(".sp-preview-inner");
 				//alert(find_color);
                 e.stopPropagation();
@@ -444,13 +466,14 @@
                 }
                 if (setValue) {
                     currentValue = parseFloat((dragHeight - dragY) / dragHeight);
-					 //alert(currentValue);
+					// alert(currentValue);
                 }
 
                 isEmpty = false;
                 if (!opts.showAlpha) {
                     currentAlpha = 1;
 					//alert(currentAlpha);
+					//alert('Hi');
                 }
 
                 move();
@@ -459,7 +482,7 @@
 
             if (!!initialColor) {
                 set(initialColor);
-
+               // alert('Hi');
                 // In case color was black - update the preview UI and set the format
                 // since the set function will not run (default color is black).
                 updateUI();
@@ -514,6 +537,7 @@
                         $.each(oldPalette, function(i, c) {
                              addColorToSelectionPalette(c);
 							// alert(addColorToSelectionPalette(c));
+							//alert('hi');
                         });
                     }
                 }
@@ -521,6 +545,7 @@
 
                 try {
                     selectionPalette = window.localStorage[localStorageKey].split(";");
+					//alert('hi');
 					//alert( selectionPalette);
                 }
                 catch (e) { }
@@ -530,7 +555,7 @@
         function addColorToSelectionPalette(color) {
             if (showSelectionPalette) {
                 window.rgb = tinycolor(color).toRgbString(); /// IMPORTANT LINE IT GIVE THE COLOR CODE
-			    // alert(rgb );
+			     //alert(rgb );
                 if (!paletteLookup[rgb] && $.inArray(rgb, selectionPalette) === -1) {
                     selectionPalette.push(rgb);
                     while(selectionPalette.length > maxSelectionSize) {
@@ -553,10 +578,11 @@
         function getUniqueSelectionPalette() {
             var unique = [];
 			//alert(unique);
+		
             if (opts.showPalette) {
                 for (var i = 0; i < selectionPalette.length; i++) {
                     var rgb = tinycolor(selectionPalette[i]).toRgbString();
-
+                   ///	alert('Hi');
                     if (!paletteLookup[rgb]) {
                         unique.push(selectionPalette[i]);
 						
@@ -568,10 +594,11 @@
         }
 
         function drawPalette() {
-
+             	
             var currentColor = get();
 
             var html = $.map(paletteArray, function (palette, i) {
+				
                 return paletteTemplate(palette, currentColor, "sp-palette-row sp-palette-row-" + i, opts);
             });
 
@@ -589,6 +616,7 @@
 
         function drawInitial() {
             if (opts.showInitial) {
+				
                 var initial = colorOnShow;
                 var current = get();
                 initialColorContainer.html(paletteTemplate([initial, current], current, "sp-palette-row-initial", opts));
@@ -613,7 +641,7 @@
         }
 
         function setFromTextInput() {
-
+                  
             var value = textInput.val();
 			//alert(value);
 
@@ -638,15 +666,18 @@
         function toggle() {
             if (visible) {
                 hide();
+			
             }
             else {
                 show();
+				//alert('By');
             }
         }
 
         function show() {
             var event = $.Event('beforeShow.spectrum');
              // alert(event);
+			// alert('Hi');
             if (visible) {
                 reflow();
                 return;
@@ -688,14 +719,26 @@
                 revert();
             }
             hide();
-			//alert(hi);
+			
         }
 
         function hide() {
             // Return if hiding is unnecessary
             if (!visible || flat) { return; }
             visible = false;
-             //alert(hi);
+             //alert(hi);                                                       //// THI SFIND CHOOSE COLOR ONCLICK VALUE 
+			// alert('hi');
+			 // TEST STARED 
+			    var custom_color_find1= $('.sp-preview-inner').css('background');
+				//alert(custom_color_find1);
+				//alert("kkkkk");
+				$('.select_arrow').css('background',custom_color_find1);
+				$('.show_option').hide();
+				$('span.select_color').removeClass('select_color');
+			 
+			 /// TEST END 
+			 
+			 
             $(doc).unbind("click.spectrum", clickout);
             $(window).unbind("resize.spectrum", resize);
 
@@ -705,10 +748,13 @@
             callbacks.hide(get());
             boundElement.trigger('hide.spectrum', [ get() ]);
         }
+		
 
         function revert() {
             set(colorOnShow, true);
 			//alert(set(colorOnShow, true));
+			// alert('hi');
+			
         }
 
         function set(color, ignoreFormatChange) {
@@ -1107,6 +1153,7 @@
                 }
 
                 onmove.apply(element, [dragX, dragY, e]);
+				//alert('hi');
             }
         }
 
@@ -1114,6 +1161,7 @@
             var rightclick = (e.which) ? (e.which == 3) : (e.button == 2);
 
             if (!rightclick && !dragging) {
+				
                 if (onstart.apply(element, arguments) !== false) {
                     dragging = true;
                     maxHeight = $(element).height();
@@ -1139,12 +1187,14 @@
                 onstop.apply(element, arguments);
             }
             dragging = false;
+			//alert('hi');                                           /// FIND THE COLOR CODE ON DRAG THE COLOR PALLET
         }
 
         $(element).bind("touchstart mousedown", start);
     }
 
     function throttle(func, wait, debounce) {
+		
         var timeout;
         return function () {
             var context = this, args = arguments;
@@ -1162,9 +1212,9 @@
     */
     var dataID = "spectrum.id";
     $.fn.spectrum = function (opts, extra) {
-
+                  
         if (typeof opts == "string") {
-
+       
             var returnValue = this;
             var args = Array.prototype.slice.call( arguments, 1 );
 
@@ -1216,6 +1266,7 @@
     $.spectrum.palettes = { };
 
     $.fn.spectrum.processNativeColorInputs = function () {
+		
         if (!inputTypeColorSupport) {
             $("input[type=color]").spectrum({
                 preferredFormat: "hex6"
@@ -1882,6 +1933,7 @@
     // ---------------------
 
     tinycolor.mix = function(color1, color2, amount) {
+		
         amount = (amount === 0) ? 0 : (amount || 50);
 
         var rgb1 = tinycolor(color1).toRgb();
@@ -1929,6 +1981,7 @@
         var rgb2 = c2.toRgb();
         var brightnessA = c1.getBrightness();
         var brightnessB = c2.getBrightness();
+		
         var colorDiff = (
             Math.max(rgb1.r, rgb2.r) - Math.min(rgb1.r, rgb2.r) +
             Math.max(rgb1.g, rgb2.g) - Math.min(rgb1.g, rgb2.g) +
@@ -1949,6 +2002,7 @@
     tinycolor.isReadable = function(color1, color2) {
         var readability = tinycolor.readability(color1, color2);
         return readability.brightness > 125 && readability.color > 500;
+		
     };
 
     // `mostReadable`
@@ -1960,7 +2014,9 @@
         var bestColor = null;
         var bestScore = 0;
         var bestIsReadable = false;
+		//alert('Hi');
         for (var i=0; i < colorList.length; i++) {
+			
 
             // We normalize both around the "acceptable" breaking point,
             // but rank brightness constrast higher than hue.

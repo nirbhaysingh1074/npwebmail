@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.directwebremoting.ServerContext;
 import org.directwebremoting.ServerContextFactory;
 import org.jivesoftware.smack.Chat;
@@ -49,30 +51,32 @@ public class XmppChatClass {
 
 	private HashMap<String, Chat> activeChats = new HashMap<String, Chat>();
 
-	public void createConnection(String xmppDomain, int packetReplyTimeout, HttpServletRequest request) {
-		System.out.println("initializing connection to server" + xmppDomain);
+	public void createConnection(String chathost,String xmppDomain, int packetReplyTimeout, HttpServletRequest request) {
+		System.out.println("initializing connection to server : " + xmppDomain);
 		SmackConfiguration.setDefaultPacketReplyTimeout(packetReplyTimeout);
 	
 		// Create a configuration for the connection
-		ConnectionConfiguration config = new ConnectionConfiguration(xmppDomain);
+		ConnectionConfiguration config = new ConnectionConfiguration(chathost,5222,xmppDomain);
 		// Set the TLS security mode used when making the connection.
 		config.setSecurityMode(SecurityMode.enabled); 
+		
 		// The new connection about to be established is going to be debugged.
-		config.setDebuggerEnabled(true); 	
+		/*config.setDebuggerEnabled(true); 	*/
 		// Roster will be loaded from the server when logging in.
 		config.setRosterLoadedAtLogin(true); 
 		// Enable compression of XMPP packets.
 		config.setCompressionEnabled(true); 
 		// If a connected XMPPConnection gets disconnected abruptly, automatic reconnection is enabled.
 		config.setReconnectionAllowed(true); 
-				
+		
+		//		config.setDebuggerEnabled(true);
 		// Create a new XMPP connection object
 		//ProviderManager.addIQProvider("vCard", "vcard-temp", VCardProvider.class);
 			
 		xmppConnection = new XMPPTCPConnection(config);
 		try {
 			// Connect to the server
-			
+
 			xmppConnection.connect();
 			HttpSession httpSession = request.getSession();
 			httpSession.setAttribute("xmppConnection", xmppConnection);
@@ -102,8 +106,8 @@ public class XmppChatClass {
 			public void processPacket(Packet paramPacket)
 					throws NotConnectedException {
 
-				System.out.println("2 coonection id is %%%%%%%%%%% "
-						+ xmppConnection.getConnectionID());
+				/*System.out.println("2 coonection id is %%%%%%%%%%% "
+						+ xmppConnection.getConnectionID());*/
 
 				if (paramPacket instanceof Presence) {
 					Presence presence = (Presence) paramPacket;
@@ -126,6 +130,7 @@ public class XmppChatClass {
 							try {
 								xmppConnection.getRoster().createEntry(
 										presence.getFrom(), null, null);
+								
 							} catch (NotLoggedInException e) {
 								e.printStackTrace();
 							} catch (NoResponseException e) {
@@ -158,8 +163,8 @@ public class XmppChatClass {
 
 			@Override
 			public boolean accept(Packet packet) {
-				System.out.println("1 coonection id is %%%%%%%%%%% "
-						+ xmppConnection.getConnectionID());
+				/*System.out.println("1 coonection id is %%%%%%%%%%% "
+						+ xmppConnection.getConnectionID());*/
 				if (packet instanceof Presence) {
 					Presence presence = (Presence) packet;
 					if (presence.getType().equals(Presence.Type.subscribed)
@@ -204,7 +209,7 @@ public class XmppChatClass {
 				System.out.println("Entries Updated %%%%%%%%%%%%%%%%%%% "
 						+ coll);
 				(new ReverseClass()).createRoster(xmppConnection,
-						xmppConnection.getUser().split("/")[0], vcardImage);
+					xmppConnection.getUser().split("/")[0], vcardImage);
 			}
 
 			@Override
@@ -297,8 +302,9 @@ public class XmppChatClass {
 	public void performLogin(String username, String password,
 			String onlineStatus) {
 		try {
+			
 			// login to the connected server
-			xmppConnection.login(username, password);
+			xmppConnection.login(username, password,xmppConnection.getConnectionID());
 
 			// Create the presence object with default availability
 			Presence presence = new Presence(Presence.Type.available);
@@ -424,6 +430,9 @@ public class XmppChatClass {
 		System.out
 				.println("subscribe sent to in accept friend request %%%%%%%%%% "
 						+ from);
+		
+		(new ReverseClass()).createRoster(xmppConnection,
+				xmppConnection.getUser().split("/")[0], null);
 	}
 	
 	/*public void denyFrndReq(String from) {
@@ -445,7 +454,7 @@ public class XmppChatClass {
 	}*/
 	
 	public void denyFrndReq(String from) {
-		System.out.println("in deny friend request");
+		// System.out.println("in deny friend request");
 		// reject a subscription request defined by the PresenceObject
 		// (originally received with the request)
 		Presence presence = new Presence(Presence.Type.unsubscribe);
@@ -455,7 +464,7 @@ public class XmppChatClass {
 		} catch (NotConnectedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("unsubscribe sent to in deny friend request %%%%%%%%%%%%% "+ from);
+		// System.out.println("unsubscribe sent to in deny friend request %%%%%%%%%%%%% "+ from);
 		Roster roster=xmppConnection.getRoster();
 		RosterEntry entry = roster.getEntry(from);
 		System.out.println("entry to be deleted "+entry.getUser());
@@ -507,7 +516,7 @@ public class XmppChatClass {
 
 	public void closeConnection() {
 		try {
-			if (xmppConnection.isConnected()) {
+			if (xmppConnection!=null&&xmppConnection.isConnected()) {
 				xmppConnection.disconnect(); // Disconnect from the server
 				System.out.println("xmpp connection closed !");
 			}

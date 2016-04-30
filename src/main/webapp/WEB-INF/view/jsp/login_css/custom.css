@@ -1,5 +1,5 @@
 html {
-background:url(../images/Wallpaper2.jpg) no-repeat center center fixed;
+background:#f2f2f2;/* url(../images/Wallpaper2.jpg) no-repeat center center fixed; */
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
@@ -10,10 +10,10 @@ text-align: center;
 display: block;
 margin: auto;
 padding-top: 3px;}
-.password{ background:url(../images/login.png);background-repeat: no-repeat;
+/* .password{ background:url(../images/login.png);background-repeat: no-repeat;
 background-position: 10px 11px;}
 .username{ background:url(../images/user.png);background-repeat: no-repeat;
-background-position: 10px 11px;}
+background-position: 10px 11px;} */
 .username_row{}
 
 .cpadding50 h1{font-size: 16px;
@@ -2313,7 +2313,7 @@ position:absolute;
 
 @media (min-width:400px){
 
-	.login-wrap{width:372px;height:380px;margin-top:40%;}
+	.login-wrap{width:372px;height:380px;margin-top:128px;}
 	.cpadding50{padding:50px;}
 	.chpadding50{padding:0 50px;}
 	img.login-img{margin-left:5px; margin-bottom:5px; width:147px!important;}
@@ -2365,7 +2365,7 @@ padding-right:3%;
 }
 input.logpadding{
 height:42px;
-padding-left: 38px;
+padding-left: 5px;
 }
 
 .alignbottom{

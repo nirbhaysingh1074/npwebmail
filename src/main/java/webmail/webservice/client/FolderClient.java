@@ -2,380 +2,297 @@ package webmail.webservice.client;
 
 import java.text.SimpleDateFormat;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 
-import webmail.wsdl.GetComposeMailRequest;
-import webmail.wsdl.GetComposeMailResponse;
-import webmail.wsdl.GetInboxMailDescRequest;
-import webmail.wsdl.GetInboxMailRequest;
-import webmail.wsdl.GetLdapFNameRequest;
-import webmail.wsdl.GetLdapFNameResponse;
-import webmail.wsdl.GetMailAttachDownloadRequest;
-import webmail.wsdl.GetMailAttachDownloadResponse;
-import webmail.wsdl.GetMailDisplayRequest;
-import webmail.wsdl.GetMailDisplayResponse;
-import webmail.wsdl.GetMailInboxDescResponse;
-import webmail.wsdl.GetMailInboxResponse;
-import webmail.wsdl.GetWebmailAllMailCountRequest;
-import webmail.wsdl.GetWebmailAllMailCountResponse;
-import webmail.wsdl.GetWebmailAuthRequest;
-import webmail.wsdl.GetWebmailAuthResponse;
-import webmail.wsdl.GetWebmailFolderRequest;
-import webmail.wsdl.GetWebmailFolderResponse;
-import webmail.wsdl.GetWebmailImapquotaRequest;
-import webmail.wsdl.GetWebmailImapquotaResponse;
-import webmail.wsdl.GetWebmailMoveTrashRequest;
-import webmail.wsdl.GetWebmailMoveTrashResponse;
-import webmail.wsdl.GetWebmailQuotaRequest;
-import webmail.wsdl.GetWebmailQuotaResponse;
-import webmail.wsdl.GetWebmailSubFolderRequest;
-import webmail.wsdl.GetWebmailSubFolderResponse;
-import webmail.wsdl.GetWebmailUnreadMailCountRequest;
-import webmail.wsdl.GetWebmailUnreadMailCountResponse;
-import webmail.wsdl.RemoveWebmailFlagRequest;
-import webmail.wsdl.RemoveWebmailFlagResponse;
-import webmail.wsdl.SetWebmailFlagResponse;
-import webmail.wsdl.SetWebmailFlageRequest;
-import webmail.wsdl.SetWebmailSeenRequest;
-import webmail.wsdl.SetWebmailSeenResponse;
-import webmail.wsdl.SetWebmailUnSeenRequest;
-import webmail.wsdl.SetWebmailUnSeenResponse;
+import webmail.wsdl.AssignSinglePermissionDAVRequest;
+import webmail.wsdl.AssignSinglePermissionRequest;
+import webmail.wsdl.AssignSinglePermissionResponse;
+import webmail.wsdl.CreateEssentialFoldersRequest;
+import webmail.wsdl.CreateEssentialFoldersResponse;
+import webmail.wsdl.CreateFolderDAVRequest;
+import webmail.wsdl.CreateFolderRequest;
+import webmail.wsdl.CreateFolderResponse;
+import webmail.wsdl.DeleteFolderRequest;
+import webmail.wsdl.DeleteFolderResponse;
+import webmail.wsdl.FolderListReturn;
+import webmail.wsdl.GetFolderByPathDAVRequest;
+import webmail.wsdl.GetFolderByPathRequest;
+import webmail.wsdl.GetFolderByPathResponse;
+import webmail.wsdl.GetFolderDAVRequest;
+import webmail.wsdl.GetFolderRequest;
+import webmail.wsdl.GetFolderResponse;
+import webmail.wsdl.GetRecycledDocsRequest;
+import webmail.wsdl.GetRecycledDocsResponse;
+import webmail.wsdl.GetSharedFoldersByPathDAVRequest;
+import webmail.wsdl.GetSharedFoldersByPathRequest;
+import webmail.wsdl.GetSharedFoldersByPathResponse;
+import webmail.wsdl.GetSharedFoldersRequest;
+import webmail.wsdl.GetSharedFoldersResponse;
+import webmail.wsdl.HasChildRequest;
+import webmail.wsdl.HasChildResponse;
+import webmail.wsdl.RecycleFolderDAVRequest;
+import webmail.wsdl.RecycleFolderRequest;
+import webmail.wsdl.RecycleFolderResponse;
+import webmail.wsdl.RenameFolderRequest;
+import webmail.wsdl.RenameFolderResponse;
+import webmail.wsdl.RestoreFolderRequest;
+import webmail.wsdl.RestoreFolderResponse;
+import webmail.wsdl.RestoreVersionRequest;
+import webmail.wsdl.RestoreVersionResponse;
+import webmail.wsdl.ShareFolderByPathRequest;
+import webmail.wsdl.ShareFolderByPathResponse;
 
 public class FolderClient extends WebServiceGatewaySupport {
-	
-	
-	
-	public GetWebmailFolderResponse getWebmailFolderRequest(String host, String id, String pass)
-	{
-		GetWebmailFolderRequest request = new GetWebmailFolderRequest();
-		request.setWebamilHost(host);
-		
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		
-		GetWebmailFolderResponse response =(GetWebmailFolderResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback(
-						"http://localhost:8080/ws/GetWebmailFolderRequest"));
-		
+
+
+	public CreateEssentialFoldersResponse createEssentialFolders( String userid,String password) {
+		CreateEssentialFoldersRequest request = new CreateEssentialFoldersRequest();
+		request.setUserid(userid);request.setPassword(password);
+		CreateEssentialFoldersResponse response = (CreateEssentialFoldersResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/CreateEssentialFoldersRequest"));
 		return response;
-		
-	}
-	
-	
-	public GetWebmailSubFolderResponse getWebmailSubFolderRequest(String host, String id, String pass, String path)
-	{
-		GetWebmailSubFolderRequest request=new GetWebmailSubFolderRequest();
-		request.setWebamilFolderPath(path);
-		request.setWebamilHost(host);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		
-		GetWebmailSubFolderResponse response=(GetWebmailSubFolderResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailSubFolderRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public GetWebmailAuthResponse getWebmailAuthRequest(String host, String port, String id, String pass)
-	{
-		GetWebmailAuthRequest request = new GetWebmailAuthRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		
-		GetWebmailAuthResponse response =(GetWebmailAuthResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailAuthRequest"));
-		
-		return response;
-		
 	}
 
 	
-	public GetWebmailImapquotaResponse getWebmailImapquotaRequest(String host, String id, String pass)
-	{
-		GetWebmailImapquotaRequest request = new GetWebmailImapquotaRequest();
-		request.setWebamilHost(host);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		
-		GetWebmailImapquotaResponse response =(GetWebmailImapquotaResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailImapquotaRequest"));
-		
+	public GetFolderResponse getFolderRequest(String path, String userid,String password) {
+		GetFolderDAVRequest request = new GetFolderDAVRequest();
+		request.setFolderPath(path);
+		request.setUserid(userid);request.setPassword(password);
+		GetFolderResponse response = (GetFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/GetFolderDAVRequest"));
 		return response;
-		
 	}
-	
-	
-	public GetWebmailUnreadMailCountResponse getWebmailUnreadMailCountRequest(String host,String port, String id, String pass, String folder)
-	{
-		GetWebmailUnreadMailCountRequest request = new GetWebmailUnreadMailCountRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFolder(folder);
-		GetWebmailUnreadMailCountResponse response =(GetWebmailUnreadMailCountResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailUnreadMailCountRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public GetWebmailAllMailCountResponse getWebmailAllMailCountRequest(String host,String port, String id, String pass, String folder)
-	{
-		GetWebmailAllMailCountRequest request = new GetWebmailAllMailCountRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFolder(folder);
-		GetWebmailAllMailCountResponse response =(GetWebmailAllMailCountResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailAllMailCountRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	
-	
-	public GetMailInboxResponse getInboxMailRequest(String host,String port, String id, String pass, String start, String end, String folder)
-	{
-		GetInboxMailRequest request = new GetInboxMailRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilStart(start);
-		request.setWebamilEnd(end);
-		request.setWebamilFolder(folder);
-		GetMailInboxResponse response =(GetMailInboxResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetInboxMailRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public GetMailInboxDescResponse getInboxMailRequestDesc(String host,String port, String id, String pass, String start, String end, String folder)
-	{
-		GetInboxMailDescRequest request = new GetInboxMailDescRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilStart(start);
-		request.setWebamilEnd(end);
-		request.setWebamilFolder(folder);
-		GetMailInboxDescResponse response =(GetMailInboxDescResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetInboxMailDescRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	
-	public SetWebmailFlagResponse setFlagActionRequest(String host,String port, String id, String pass, String folder, String uids)
-	{
-		SetWebmailFlageRequest request = new SetWebmailFlageRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebmailFolder(folder);
-		request.setWebamilUids(uids);
-		
-		SetWebmailFlagResponse response =(SetWebmailFlagResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/SetWebmailFlageRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public RemoveWebmailFlagResponse removeFlagActionRequest(String host,String port, String id, String pass, String folder, String uids)
-	{
-		RemoveWebmailFlagRequest request = new RemoveWebmailFlagRequest();
-		request.setWebmailHost(host);
-		request.setWebmailPost(port);
-		request.setWebmailId(id);
-		request.setWebmailPassword(pass);
-		request.setWebmailFolder(folder);
-		request.setWebmailUids(uids);
-		
-		RemoveWebmailFlagResponse response =(RemoveWebmailFlagResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/RemoveWebmailFlagRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	
-	public SetWebmailSeenResponse setSeenActionRequest(String host,String port, String id, String pass, String folder, String uids)
-	{
-		SetWebmailSeenRequest request = new SetWebmailSeenRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebmailFolder(folder);
-		request.setWebamilUids(uids);
-		
-		SetWebmailSeenResponse response =(SetWebmailSeenResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/SetWebmailSeenRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	
-	public SetWebmailUnSeenResponse setUnSeenActionRequest(String host,String port, String id, String pass, String folder, String uids)
-	{
-		SetWebmailUnSeenRequest request = new SetWebmailUnSeenRequest();
-		request.setWebmailHost(host);
-		request.setWebmailPort(port);
-		request.setWebmailId(id);
-		request.setWebmailPassword(pass);
-		request.setWebmailFolder(folder);
-		request.setWebmailUids(uids);
-		
-		SetWebmailUnSeenResponse response =(SetWebmailUnSeenResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/SetWebmailUnSeenRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	
-	
-	
-	
-	public GetWebmailMoveTrashResponse  moveToTrashRequest(String host,String port, String id, String pass, String folder, String uids)
-	{
-		GetWebmailMoveTrashRequest request = new GetWebmailMoveTrashRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFolder(folder);
-		request.setWebamilUids(uids);
-		
-		GetWebmailMoveTrashResponse response =(GetWebmailMoveTrashResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetWebmailMoveTrashRequest"));
-		
-		return response;
-		
-	}
-	
-	public GetMailDisplayResponse  displayMailContentRequest(String host,String port, String id, String pass,String uid, String folder)
-	{
-		GetMailDisplayRequest request = new GetMailDisplayRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFolder(folder);
-		request.setWebamilUid(uid);
-		
-		GetMailDisplayResponse response =(GetMailDisplayResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetMailDisplayRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public GetMailAttachDownloadResponse  downloadMailAttachRequest(String host,String port, String id, String pass,String uid, String folder, String name)
-	{
-		GetMailAttachDownloadRequest request = new GetMailAttachDownloadRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFolder(folder);
-		request.setWebamilUid(uid);
-		request.setWebamilFileName(name);
-		//request.setWebamilResponse(resp);
-		
-		GetMailAttachDownloadResponse response =(GetMailAttachDownloadResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetMailDisplayRequest"));
-		
-		return response;
-		
-	}
-	
-	
-	public GetComposeMailResponse  comoseMailRequest(String ip, String host, String port,String imapport, boolean savesent, String id, String pass,String fromname, String to, String cc, String bcc, String sub ,String cnt)
-	{
-		GetComposeMailRequest request = new GetComposeMailRequest();
-		request.setWebamilHost(host);
-		request.setWebamilPort(port);
-		request.setWebamilIMAPPort(imapport);
-		request.setWebamilSaveSent(savesent);
-		request.setWebamilId(id);
-		request.setWebamilPassword(pass);
-		request.setWebamilFromName(fromname);
-		request.setWebamilTo(to);
-		request.setWebamilCc(cc);
-		request.setWebamilBcc(bcc);
-		request.setWebamilSubject(sub);
-		request.setWebamilBodyContent(cnt);
-		
-		//request.setWebamilResponse(resp);
-		
-		GetComposeMailResponse response =(GetComposeMailResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetComposeMailRequest"));
-		
-		return response;
-		
-	}
-	
 
-	public GetLdapFNameResponse  getLdapFNmae(String ldapurl, String uid, String pass, String base, String attname)
-	{
-		GetLdapFNameRequest request = new GetLdapFNameRequest();
-		request.setWebamilUrl(ldapurl);
-		request.setWebamilId(uid);
-		request.setWebamilPassword(pass);
-		request.setWebmailBase(base);
-		request.setWebamilAttName(attname);
-		
-		GetLdapFNameResponse response =(GetLdapFNameResponse) getWebServiceTemplate().marshalSendAndReceive(
-				request,
-				new SoapActionCallback("http://localhost:8080/ws/GetLdapFNameRequest"));
-		
+	public GetFolderResponse getFolderRequestBC(String path, String userid,String password) {
+		GetFolderRequest request = new GetFolderRequest();
+		request.setFolderPath(path);
+		request.setUserid(userid);request.setPassword(password);
+		GetFolderResponse response = (GetFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/GetFolderRequest"));
 		return response;
-		
 	}
 	
+	public GetSharedFoldersResponse getSharedFoldersRequest(String userid,String password) {
+		GetSharedFoldersRequest request = new GetSharedFoldersRequest();
+		request.setUserid(userid);
+		request.setPassword(password);
+		GetSharedFoldersResponse response = (GetSharedFoldersResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/GetSharedFoldersRequest"));
 
+		return response;
+	}
 
-	
+public GetSharedFoldersByPathResponse getSharedFoldersByPathRequest(
+			String userid,String password, String path) {
+		GetSharedFoldersByPathDAVRequest request = new GetSharedFoldersByPathDAVRequest();
+		request.setUserid(userid);request.setPassword(password);
+		request.setPath(path);
+		GetSharedFoldersByPathResponse response = (GetSharedFoldersByPathResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/GetSharedFoldersByPathDAVRequest"));
+
+		return response;
+	}
+
+public void printResponse(GetFolderResponse response) {
+		FolderListReturn country = response.getGetFoldersByParentFolder();
+		System.out.println();
+		System.out.println("Forecast for " + ", "
+				+ country.getFolderListResult().getFolderList().size());
+
+		/*
+		 * SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		 * System.out
+		 * .print(format.format(forecast.getDate().toGregorianCalendar(
+		 * ).getTime())); System.out.print(" ");
+		 * System.out.print(forecast.getDesciption()); System.out.print(" ");
+		 * Temp temperature = forecast.getTemperatures();
+		 * System.out.print(temperature.getMorningLow() + "\u00b0-" +
+		 * temperature.getDaytimeHigh() + "\u00b0 "); System.out.println(); } }
+		 * else { System.out.println("No forecast received"); }
+		 */
+	}
+		public HasChildResponse hasChild(String path, String userid,String password) {
+		HasChildRequest request = new HasChildRequest();
+		request.setFolderPath(path);
+		request.setUserid(userid);request.setPassword(password);
+		HasChildResponse response = (HasChildResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/HasChildRequest"));
+		return response;
+	}
+
+public CreateFolderResponse createFolder(String folderName,
+			String parentFolder, String userid,String password, String keywords, String notes) {
+		CreateFolderDAVRequest request = new CreateFolderDAVRequest();
+		request.setFolderName(folderName);
+		request.setParentFolder(parentFolder);
+		request.setUserid(userid);request.setPassword(password);
+		request.setKeywords(keywords);
+		request.setNotes(notes);
+		CreateFolderResponse response = (CreateFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/CreateFolderDAVRequest"));
+		return response;
+	}
+
+public GetFolderByPathResponse getFolderByPath(String folderPath,
+			String userid,String password) {
+		GetFolderByPathDAVRequest request = new GetFolderByPathDAVRequest();
+		request.setFolderPath(folderPath);
+		request.setUserid(userid);request.setPassword(password);
+		GetFolderByPathResponse response = (GetFolderByPathResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/GetFolderByPathDAVRequest"));
+		return response;
+	}
+
+public GetFolderByPathResponse getFolderByPathBC(String folderPath,
+		String userid,String password) {
+	GetFolderByPathRequest request = new GetFolderByPathRequest();
+	request.setFolderPath(folderPath);
+	request.setUserid(userid);request.setPassword(password);
+	GetFolderByPathResponse response = (GetFolderByPathResponse) getWebServiceTemplate()
+			.marshalSendAndReceive(
+					request,
+					new SoapActionCallback(
+							"http://mail.silvereye.in:8080/ws/GetFolderByPathRequest"));
+	return response;
+}
+
+	public ShareFolderByPathResponse shareFolderByPath(String folderPath,
+			String userid,String password, String users, String groups, String userpermissions,
+			String grouppermissions) {
+		ShareFolderByPathRequest request = new ShareFolderByPathRequest();
+		request.setFolderPath(folderPath);
+		request.setUserid(userid);request.setPassword(password);
+		request.setUsers(users);
+		request.setGroups(groups);
+		request.setUserpermissions(userpermissions);
+		request.setGrouppermissions(grouppermissions);
+
+		ShareFolderByPathResponse response = (ShareFolderByPathResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/ShareFolderByPathRequest"));
+
+		return response;
+	}
+
+		public AssignSinglePermissionResponse assignSinglePermission(
+			String folderName, String userid,String password, String user, String value) {
+		AssignSinglePermissionDAVRequest request = new AssignSinglePermissionDAVRequest();
+		request.setFolderPath(folderName);
+		request.setUser(user);
+		request.setValue(value);
+		request.setUserid(userid);request.setPassword(password);
+
+		AssignSinglePermissionResponse response = (AssignSinglePermissionResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/AssignSinglePermissionDAVRequest"));
+
+		return response;
+	}
+
+		public DeleteFolderResponse deleteFolder(String folderName, String userid,String password) {
+		DeleteFolderRequest request = new DeleteFolderRequest();
+		request.setUserid(userid);request.setPassword(password);
+		request.setFolderPath(folderName);
+		DeleteFolderResponse deleteResponse = (DeleteFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/deleteFolderRequest"));
+		return deleteResponse;
+	}
+
+	public RecycleFolderResponse recycleFolder(String folderName, String userid,String password) {
+		RecycleFolderDAVRequest request = new RecycleFolderDAVRequest();
+		request.setUserid(userid);request.setPassword(password);
+		request.setFolderPath(folderName);
+		RecycleFolderResponse deleteResponse = (RecycleFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/recycleFolderDAVRequest"));
+		return deleteResponse;
+	}
+
+	public RestoreFolderResponse restoreFolder(String folderName, String userid,String password) {
+		RestoreFolderRequest request = new RestoreFolderRequest();
+		request.setUserid(userid);request.setPassword(password);
+		request.setFolderPath(folderName);
+		RestoreFolderResponse deleteResponse = (RestoreFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/restoreFolderRequest"));
+		return deleteResponse;
+	}
+
+		public GetRecycledDocsResponse getRecycledDoc(String userid,String password,
+			String folderName) {
+		GetRecycledDocsRequest request = new GetRecycledDocsRequest();
+		request.setUserid(userid);request.setPassword(password);
+		request.setPath(folderName);
+		GetRecycledDocsResponse deleteResponse = (GetRecycledDocsResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/getRecycledDocsRequest"));
+		return deleteResponse;
+	}
+
+	public RenameFolderResponse renameFolder(String oldFolderName,
+			String newFolderName, String userid,String password) {
+		RenameFolderRequest request = new RenameFolderRequest();
+		request.setOldName(oldFolderName);
+		request.setNewName(newFolderName);
+		request.setUserid(userid);request.setPassword(password);
+		RenameFolderResponse renameResponse = (RenameFolderResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/renameFolderRequest"));
+		return renameResponse;
+	}
+
+	public RestoreVersionResponse restoreVersion(String folderPath,
+			String versionName, String userid,String password) {
+		RestoreVersionRequest request = new RestoreVersionRequest();
+		request.setFolderPath(folderPath);
+		request.setUserid(userid);request.setPassword(password);
+		request.setVersionName(versionName);
+		RestoreVersionResponse restoreResponse = (RestoreVersionResponse) getWebServiceTemplate()
+				.marshalSendAndReceive(
+						request,
+						new SoapActionCallback(
+								"http://mail.silvereye.in:8080/ws/restoreVersionRequest"));
+		return restoreResponse;
+	}
+
 }

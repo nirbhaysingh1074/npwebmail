@@ -3,7 +3,9 @@
  * Docs & License: http://arshaw.com/fullcalendar/
  * (c) 2013 Adam Shaw
  */
-
+#widget_calender {
+overflow: auto;
+}
 
 .fc {
 	direction: ltr;
@@ -428,8 +430,8 @@ temporary rendered events).
 --------------------------------------------------------------------------------------------------*/
 
 .fc-scroller { /* this class goes on elements for guaranteed vertical scrollbars */
-	overflow-y: scroll;
-	overflow-x: hidden;
+	/* overflow-y: scroll;
+	overflow-x: hidden; */
 }
 
 .fc-scroller > * { /* we expect an immediate inner element */
@@ -573,16 +575,17 @@ a.fc-more:hover {
 .fc-toolbar {
 	text-align: center;
 	margin-bottom: 1em;
-	background: url(../images/tool_bg.jpg);
+	background: #f9f9f9;
 border-bottom: 1px solid #ccc;
 padding: 4px;
 position: absolute;
 width: 100%;
 z-index: 9;
+top:0;
 }
 
 .fc-toolbar .fc-left {
-	float: right;width: 32.4%;
+	float: right;width: 34.4%;
 margin-right: 114px;
 }
 
@@ -590,7 +593,7 @@ margin-right: 114px;
 	float: right;
 margin-right: 10px;
 position: absolute;
-right: 265px;
+right: 195px;
 }
 
 .fc-toolbar .fc-center {
@@ -987,7 +990,7 @@ be a descendant of the grid when it is being dragged.
 .fc-today-button{/* width: auto !important; */
 text-transform: capitalize;
 font-size: 11px !important;
-font-weight: bold;
+font-weight: normal;
 color: #575757;
 /* font-family: arial; */
 font: normal Arial,sans-serif;

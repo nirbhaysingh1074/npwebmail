@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import webmail.webservice.client.FolderClient;
+import webmail.webservice.client.WebmailClient;
 import webmail.wsdl.SetWebmailSeenResponse;
 import webmail.wsdl.SetWebmailUnSeenResponse;
 
@@ -21,7 +21,7 @@ import webmail.wsdl.SetWebmailUnSeenResponse;
 public class MailSeenActionController {
 	
 	@Autowired
-	private FolderClient folderClient;
+	private WebmailClient webmailClient;
 	
 	@RequestMapping(value = "/webmailUnReadAtion", method = RequestMethod.GET)
 	@ResponseBody
@@ -37,7 +37,7 @@ public class MailSeenActionController {
 		String port=(String)hs.getAttribute("port");
 		System.out.println("********************uids="+uid);
 		System.out.println("******************** unread fldrnm="+fldrnm);
-		SetWebmailUnSeenResponse sflag=folderClient.setUnSeenActionRequest(host, port, id, pass, fldrnm, uid);
+		SetWebmailUnSeenResponse sflag=webmailClient.setUnSeenActionRequest(host, port, id, pass, fldrnm, uid);
 		status=sflag.isSetWebmailUnSeenStatus();
 		System.out.println("********************"+status);
 		
@@ -61,7 +61,7 @@ public class MailSeenActionController {
 		String port=(String)hs.getAttribute("port");
 		System.out.println("********************uids="+uid);
 		System.out.println("******************** read fldrnm="+fldrnm);
-		SetWebmailSeenResponse sflag=folderClient.setSeenActionRequest(host, port, id, pass, fldrnm, uid);
+		SetWebmailSeenResponse sflag=webmailClient.setSeenActionRequest(host, port, id, pass, fldrnm, uid);
 		status=sflag.isSetWebmailSeenStatus();
 		System.out.println("********************"+status);
 		

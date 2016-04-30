@@ -27,7 +27,7 @@ import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 
 public class ReverseClass1 {
 
-	public void createRoster(XMPPConnection xmppConnection2, String loggedUser,
+/*	public void createRoster(XMPPConnection xmppConnection2, String loggedUser,
 			final String imageUrl) {
 		String page = null;
 		Container container = ServerContextFactory.get().getContainer();
@@ -257,7 +257,7 @@ public class ReverseClass1 {
 				ScriptSessions.addFunctionCall("createChatRow", addDivs);
 			}
 		});
-	}
+	}*/
 
 	public void updatePresence(ServerContext serverContext, Presence presence) {
 		String[] divid = presence.getFrom().split("/");
@@ -303,7 +303,7 @@ public class ReverseClass1 {
 		}
 	}
 
-	public void listeningForMessages(Message message) {
+	/*public void listeningForMessages(Message message) {
 		String from = message.getFrom();
 		final String newmsg = message.getBody();
 		final String[] name = from.split("@");
@@ -357,5 +357,5 @@ public class ReverseClass1 {
 				}
 			}
 		});
-	}
+	}*/
 }

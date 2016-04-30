@@ -3,7 +3,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%-- <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %> --%>

@@ -46,6 +46,7 @@
         } else if (settings.orientation == 'horizontal') {
             panel_1 = children.first().addClass('top_panel')
             panel_2 = panel_1.next().addClass('bottom_panel');
+			$('.chat_inner_content').addClass('bottom_panel');
             cls = 'hsplitter';
         }
         if (settings.invisible) {
@@ -161,6 +162,7 @@
                 } else if (settings.orientation == 'horizontal') {
                     panel_1.removeClass('top_panel');
                     panel_2.removeClass('bottom_panel');
+					$('.chat_inner_content').removeClass('bottom_panel');
                 }
                 self.unbind('splitter.resize');
                 self.find('.splitter_panel').trigger('splitter.resize');

@@ -5,6 +5,14 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
   <filter>
+    <filter-name>noCacheFilter</filter-name>
+    <filter-class>com.example.NoCacheFilter</filter-class>
+ </filter>
+ <filter-mapping>
+  <filter-name>noCacheFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+ </filter-mapping>
+  <filter>
     <filter-name>springRequestFilter</filter-name>
     <filter-class>org.springframework.web.filter.RequestContextFilter</filter-class>
   </filter>
@@ -12,14 +20,14 @@
     <filter-name>springRequestFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <filter>
+ <!--  <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping> -->
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -47,7 +55,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>dwr-invoker</servlet-name>
-    <servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+    <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
     <init-param>
       <param-name>debug</param-name>
       <param-value>true</param-value>
@@ -67,7 +75,12 @@
     <init-param>
       <param-name>normalizeIncludesSessionID</param-name>
       <param-value>true</param-value>
-    </init-param>
+  </init-param>
+  <init-param>
+	<param-name>maxWaitAfterWrite</param-name>
+	<param-value>-1</param-value>
+</init-param>
+ 
     <load-on-startup>2</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -88,4 +101,7 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!--  <session-config>
+  <session-timeout>1</session-timeout>
+</session-config>  -->
 </web-app>

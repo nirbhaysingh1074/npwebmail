@@ -8,7 +8,7 @@
 Run this application using embedded Jetty server: <code>mvn -P dev jetty:run -Dspring.profiles.active="dev"</code>
 </p>
 
-<p>This will start embedded Jetty server on port 8080 and you can access your application here: <code>http://localhost:8080</code></p>
+<p>This will start embedded Jetty server on port 8080 and you can access your application here: <code>http://mail.silvereye.in:8080</code></p>
 
 <h2>To deploy on Heroku:</h2>
 

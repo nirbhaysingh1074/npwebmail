@@ -27,11 +27,19 @@
                 // override this
                 this.boxManager.addMsg(user.first_name, msg);
             },
-            boxClosed: function(id) {
+            boxClosed: function(options) {
+            	//alert(title);
+            	//try{
+            	  title =options.title || "No Title";
+            	  id =options.id;
+            	 // var title=title.replace('.','\\.');
             	var newchatid="#"+title.split("@")[0]+"chatboxcreated";
             	$(newchatid).remove();
+            	
             	var openid="#"+title.split("@")[0]+"open_chat_box";
     			$('<div id="'+title.split("@")[0]+'chat_div"></div>').appendTo(openid);
+    			//}catch(e){}
+    			//alert('This Test !');
             }, // called when the close icon is clicked
             boxManager: {
                 // thanks to the widget factory facility
@@ -39,9 +47,13 @@
                 init: function(elem) {
                     this.elem = elem;
                 },
-                addMsg: function(peer, msg) {
+                addMsg: function(peer, msg ,hid_nm) {
                     var self = this;
                     var box = self.elem.uiChatboxLog;
+                  
+                    var hid_arr=hid_nm.split("_div");
+                    var hid_id=hid_arr[0]+"boxcreated";
+                    var chk=$(hid_id).children('.new_header_top').children('span').children('.hid_chat_nm').html();
                     var e = document.createElement('div');
                     box.append(e);
                     $(e).hide();
@@ -51,14 +63,25 @@
                     var para=document.createElement('p');
 
                     if (peer) {
-                        e.appendChild(para);
-                        var peerName = document.createElement("b");
-                        $(peerName).text(peer + ": ");
-                        para.appendChild(peerName);
+                    	if(chk!=peer)
+                    		{
+                    		e.appendChild(para);
+                    		var peerName = document.createElement("b");
+                    		$(peerName).text(peer + ": ");
+                    		para.appendChild(peerName);
+                    		$(hid_id).children('.new_header_top').children('span').children('.hid_chat_nm').html("me");
+                    		}
+                    	else
+                    		{
+                    		e.appendChild(para);
+                    		//var peerName = document.createElement("b");
+                    		//$(peerName).text(peer + ": ");
+                    		//para.appendChild(peerName);
+                    		}
+                    	
                     } else {
                         systemMessage = true;
                     }
-
                     var msgElement = document.createElement(
                         systemMessage ? "i" : "span");
                     $(msgElement).text(msg);
@@ -100,17 +123,27 @@
         widget: function() {
             return this.uiChatbox
         },
-        _create: function() {
+        _create: function() {       	
+          //	alert('Hi=5');
+        
             var self = this,
             options = self.options,
-            title = options.title || "No Title",
-            imagenm = options.imagenm,
+            title = options.title || "No Title";
+            imagenm = options.imagenm;
             // chatbox
+         //   alert(title);
+            title=title.replace("_",".");
+            var title_length = title.split("@");
+         // alert(title_length.length);
+            
+            
+            
+            
             uiChatbox = (self.uiChatbox = $('<div id="'+title.split("@")[0]+'chatboxcreated"></div>'))
                 .appendTo($('.inner_chat_box'))
                 .addClass('ui-widget ' +
                           'ui-corner-top ' +
-                          'ui-chatbox'
+                          'ui-chatbox' + ' new_chat_header'
                          )
                 .attr('outline', 0)
                 .focusin(function() {
@@ -129,49 +162,60 @@
                 .addClass('ui-widget-header ' +
                           'ui-corner-top ' +
                           'ui-chatbox-titlebar ' +
-                          'ui-dialog-header' // take advantage of dialog header style
+                          'ui-dialog-header' + ' new_header_top' // take advantage of dialog header style
                          )
                 .click(function(event) {
                     self.toggleContent(event);
+                  //  alert('Hi_1')
                 })
                 .appendTo(uiChatbox),
             uiChatboxTitle = (self.uiChatboxTitle = $('<span></span>'))
-                .html("<div id='"+title.split("@")[0]+"avlblimg' style='float: left;margin-top: 7px;width: 15px;'>" +
-                		"<img src='images/"+imagenm+"' style='margin-left: 2px;margin-right: 4px;' /></div>"+"<div class='title_name'>"+title+"</div>")
+                .html("<div class='hid_chat_nm'></div><div class='hid_frnd_uid'></div><div id='"+title.split("@")[0]+"avlblimg' style='float: left;margin-top: 7px;width: 15px;'>" +
+                		"<img src='"+imagenm+"' class='chat_box_icon' /></div>"+"<div class='title_name'>"+title+"</div>")
                 .appendTo(uiChatboxTitlebar),
-            uiChatboxTitlebarClose = (self.uiChatboxTitlebarClose = $('<a href="#"></a>'))
+            uiChatboxTitlebarClose = (self.uiChatboxTitlebarClose = $('<a></a>'))
                 .addClass('ui-corner-all ' +
-                          'ui-chatbox-icon '
+                          'ui-chatbox-icon '+ 'chat_minu'
                          )
                 .attr('role', 'button')
                 .hover(function() { uiChatboxTitlebarClose.addClass('ui-state-hover'); },
                        function() { uiChatboxTitlebarClose.removeClass('ui-state-hover'); })
                 .click(function(event) {
                     uiChatbox.hide();
-                    self.options.boxClosed(self.options.id);
+                   // alert('Hi');
+                   // alert('Hi_2');
+                  
+                    self.options.boxClosed(self.options);
                     return false;
                 })
                 .appendTo(uiChatboxTitlebar),
             uiChatboxTitlebarCloseText = $('<span></span>')
                 .addClass('ui-icon ' +
-                          'ui-icon-closethick')
+                          'ui-icon-closethick' + ' new_delete_chat')
                 .text('x')// TEST chnages text close
                 .appendTo(uiChatboxTitlebarClose),
-            uiChatboxTitlebarMinimize = (self.uiChatboxTitlebarMinimize = $('<a href="#"></a>'))
+            uiChatboxTitlebarMinimize = (self.uiChatboxTitlebarMinimize = $('<a ></a>'))
                 .addClass('ui-corner-all ' +
-                          'ui-chatbox-icon'
+                          'ui-chatbox-icon '+ 'chat_minu'
                          )
                 .attr('role', 'button')
                 .hover(function() { uiChatboxTitlebarMinimize.addClass('ui-state-hover'); },
                        function() { uiChatboxTitlebarMinimize.removeClass('ui-state-hover'); })
                 .click(function(event) {
                     self.toggleContent(event);
+                    $(this).parent().toggleClass('chat_input_new' );
+                   $(this).parent().parent().toggleClass( 'chat_input');
+                    
+                   
+                  //  alert('Hi-Hi');
+                   // alert('Hi-3');
                     return false;
                 })
                 .appendTo(uiChatboxTitlebar),
             uiChatboxTitlebarMinimizeText = $('<span></span>')
                 .addClass('ui-icon ' +
-                          'ui-icon-minusthick')
+                          'ui-icon-minusthick ' 
+                		+ 'minustick_1')
                 .text('-')// TEST CHNAGES minimize
                 .appendTo(uiChatboxTitlebarMinimize),
             // content
@@ -181,7 +225,7 @@
                          )
                 .appendTo(uiChatbox),
             uiChatboxLog = (self.uiChatboxLog = self.element)
-                .addClass('ui-widget-content ' +
+                .addClass('ui-widget-content ' + 
                           'ui-chatbox-log'
                          )
                 .appendTo(uiChatboxContent),
@@ -190,25 +234,34 @@
                           'ui-chatbox-input'
                          )
                 .click(function(event) {
+                	//self.parent().parent().toggleClass('chat_input_new' );
+                	//alert('Hi-Hi-1');
+                	//$('div.chat_input').removeClass('chat_input');
                     // anything?
                 })
                 .appendTo(uiChatboxContent),
             uiChatboxInputBox = (self.uiChatboxInputBox = $('<textarea></textarea>'))
                 .addClass('ui-widget-content ' +
                           'ui-chatbox-input-box ' +
-                          'ui-corner-all'
+                          'ui-corner-all' + ' chat_textarea_input'
                          )
                 .appendTo(uiChatboxInput)
                 .keydown(function(event) {
                     if (event.keyCode && event.keyCode == $.ui.keyCode.ENTER) {
                         msg = $.trim($(this).val());
+                       var sarr=title.split("@");
+                       var frnduid=sarr[0];
+                       frnduid=frnduid.replace('.','\\.');
+                        frnduid=frnduid+"chatboxcreated";
+                      var sendid=  $("#"+frnduid).children('.new_header_top').children('span').children('.hid_frnd_uid').html();
+                      //  alert(msg);
                         if (msg.length > 0) {
                             self.options.messageSent(self.options.id, self.options.user, msg);
                             $.ajax ({
                             	url:"sendChatMessage",
                             	data: {
                             		message:msg,
-                            		buddyJID:title,
+                            		buddyJID:sendid,
                             	},
                             	success: function(data){
                             		//alert(data);
@@ -235,6 +288,7 @@
             uiChatboxContent.children().click(function() {
                 // click on any children, set focus on input box
                 self.uiChatboxInputBox.focus();
+                //alert('Hi_4');
             });
 
             self._setWidth(self.options.width);
@@ -280,13 +334,28 @@
 }(jQuery));
 
 
+
+
+
 				/// For Chat Option Only Started Here 
 $(document).ready(function() {
+	
+	
+	$('.chat_inner_content >.cheat_row').click(function(){
+		
+		
+	//	alert('Hi');
+		
+		
+	});
+	
+	
+	
+	
+	
 	var removeClass="false";
 	// MINIMIZE BOX
-	$(document).on('click', '.ui-icon-minusthick', function(){ 
-		alert('Hi-hi');
-  	}); 
+
 	// HIDE ONCLICK BODY
 	$("html").click(function () {
         if (removeClass) 
@@ -296,47 +365,80 @@ $(document).ready(function() {
             removeClass = true;
            });
 	
-	// CHAT TAB STARED HERE 
+		// CHAT TAB STARED HERE 
+	var countOffOverflow = 0;
 	$('.cheat_row').click(function(){
-	var x =$(window).width();
-	//alert(x);
-	var main_chat_width = $('.inner_chat_box').innerWidth()+500;
-	var innerbox = x-470;
-	var main_chat_div = innerbox + 187;
-//	alert(main_chat_div);
-	$('.main_chat_box').css('width',main_chat_div);
-	
-	$('.main_inner_box').css('width',main_chat_div);
-	$('.inner_chat_box').css('max-width',innerbox);
-	//alert(innerbox);
-   //   alert(innerbox);
-	//alert(main_chat_width);
-	$(document).on('click', '.overflow_close', function(){ 
-		$(this).parent().remove();
-		$('.overflow_info_content').css('display','block');	
-		removeClass = false;
-  	}); 
-	
-	
-	
-	if(main_chat_width > x)
-		{
-	      //$('.overflow_chat').append();
-	      $('.overflow_chat').css('display','block');
-	      $('.overflow_info_bottom').css('display','block');
-	      $('.overflow_info_content').append('<div class="small_row"><span>Hariom Srivastava</span><div class="overflow_close"></div></div>');
-	     var count_info_overflow =   $('.small_row').length;
-	     //alert(count_info_overflow);
-	       $('.count_overflow').text(count_info_overflow )	;	
-	     
-	       
-		}
-	else{
-		//$('.overflow_chat').css('display','none');
-		//alert('This is Underflow');
-		}
-	});
-	
+		var x =$(window).width();
+		//alert(x);
+		var main_chat_width = $('.inner_chat_box').innerWidth()+500;
+		var innerbox = x-470;
+		var main_chat_div = innerbox + 187;
+		//alert(main_chat_div);
+		$('.main_chat_box').css('max-width',main_chat_div);
+		$('.main_inner_box').css('max-width',main_chat_div);
+		$('.inner_chat_box').css('max-width',innerbox);
+		//alert(innerbox);
+	    //alert(innerbox);
+		//alert(main_chat_width);
+		$(document).on('click', '.overflow_close', function(){ 
+			$(this).parent().remove();
+			$('.overflow_info_content').css('display','block');	
+			removeClass = false;
+	  	}); 
+		if(main_chat_width > x)
+			{
+			  countOffOverflow++;
+		      uiChatbox.addClass('new_overflow');
+		      uiChatbox.addClass('outoff_overflow_'+ countOffOverflow);
+		     }
+		else{
+			}
+		});
+	$('.chat_mail').click(function(){
+		var x =$(window).width();
+		//alert(x);
+		var main_chat_width = $('.inner_chat_box').innerWidth()+500;
+		var innerbox = x-470;
+		var main_chat_div = innerbox + 187;
+//		alert(main_chat_div);
+		$('.main_chat_box').css('max-width',main_chat_div);
+		
+		$('.main_inner_box').css('max-width',main_chat_div);
+		$('.inner_chat_box').css('max-width',innerbox);
+		//alert(innerbox);
+	   //   alert(innerbox);
+		//alert(main_chat_width);
+		$(document).on('click', '.overflow_close', function(){ 
+			$(this).parent().remove();
+			$('.overflow_info_content').css('display','block');	
+			removeClass = false;
+	  	}); 
+		
+		
+		
+		if(main_chat_width > x)
+			{
+			countOffOverflow++;
+			//alert(countOffOverflow);
+		      //$('.overflow_chat').append();
+		   /*   $('.overflow_chat').css('display','block');
+		      $('.overflow_info_bottom').css('display','block');
+		      $('.overflow_info_content').append('<div class="small_row"><span>Hariom Srivastava</span><div class="overflow_close"></div></div>');
+		      var count_info_overflow =   $('.small_row').length;
+		    // alert(count_info_overflow);
+		      $('.count_overflow').text(count_info_overflow );*/	
+		      uiChatbox.addClass('new_overflow');
+		      uiChatbox.addClass('outoff_overflow_'+ countOffOverflow);
+		     
+		       
+			}
+		else{
+			//$('.overflow_chat').css('display','none');
+			//alert('This is Underflow');
+			//$('.ui-widget').removeClass('new_overflow');
+			}
+		});
+
 	
 	
 	/// CHAT HIDE OVERFLOW CONTENT

@@ -39,7 +39,7 @@ public class DocumentController {
 	private Integer IMAGE_MAX_SIZE = 1024000;
 	
 	// list of allowed file extensions
-	private Set<String> allowedImageExtensions;
+	private Set<String> allowedImageExtensions; 
 	
 	// list of error messages
 	private List<String> errorMsgs = new ArrayList<String>();

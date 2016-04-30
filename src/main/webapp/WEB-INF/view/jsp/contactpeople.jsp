@@ -1942,7 +1942,7 @@ height: 100% !important;
 
 
 </script>
-<link rel='stylesheet' href='css/jquery-ui.min.css' />
+<link rel='stylesheet' href='css/jquery-ui.css' />
 <link href='css/fullcalendar.css' rel='stylesheet' />
 <link href='css/fullcalendar.print.css' rel='stylesheet' media='print' />
 <script src='js/moment.min.js'></script> 

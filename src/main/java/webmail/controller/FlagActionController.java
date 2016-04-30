@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import webmail.webservice.client.FolderClient;
+import webmail.webservice.client.WebmailClient;
 import webmail.wsdl.RemoveWebmailFlagResponse;
 import webmail.wsdl.SetWebmailFlagResponse;
 import webmail.wsdl.SetWebmailFlageRequest;
@@ -23,7 +23,7 @@ public class FlagActionController {
 
 
 	@Autowired
-	private FolderClient folderClient;
+	private WebmailClient webmailClient;
 	
 	@RequestMapping(value = "/webmailFlagAtion", method = RequestMethod.GET)
 	@ResponseBody
@@ -40,12 +40,12 @@ public class FlagActionController {
 		String port=(String)hs.getAttribute("port");
 		if(flagtp.equalsIgnoreCase("set"))
 		{
-			SetWebmailFlagResponse sflag=folderClient.setFlagActionRequest(host, port, id, pass, fldrnm, uid);
+			SetWebmailFlagResponse sflag=webmailClient.setFlagActionRequest(host, port, id, pass, fldrnm, uid);
 			status=sflag.isSetFlagStatus();
 		}
 		else if(flagtp.equalsIgnoreCase("remove"))
 		{
-			RemoveWebmailFlagResponse rflag=folderClient.removeFlagActionRequest(host, port, id, pass, fldrnm, uid);
+			RemoveWebmailFlagResponse rflag=webmailClient.removeFlagActionRequest(host, port, id, pass, fldrnm, uid);
 			status=rflag.isRemoveFlagStatus();
 		}
 		

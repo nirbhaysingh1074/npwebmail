@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import webmail.webservice.client.FolderClient;
+import webmail.bean.MailAccSetting;
+import webmail.webservice.client.WebmailClient;
 import webmail.wsdl.GetWebmailAllMailCountResponse;
 import webmail.wsdl.GetWebmailUnreadMailCountResponse;
 
@@ -21,13 +22,13 @@ public class MailCountController {
 
 	
 	@Autowired
-	private FolderClient folderClient;
+	private WebmailClient webmailClient;
 	
 	
 	
 	@RequestMapping(value = "/getAllMailCountInfolderDiv", method = RequestMethod.GET)
 	@ResponseBody
-	public String getAllMailCntDiv(ModelMap map, Principal principal,  HttpServletRequest request)
+	public synchronized String getAllMailCntDiv(ModelMap map, Principal principal,  HttpServletRequest request)
 	{
 		HttpSession hs=request.getSession();
 		String host=(String)hs.getAttribute("host");
@@ -37,9 +38,10 @@ public class MailCountController {
 		String fdrenm=request.getParameter("path");
 		String inboxcnt="";
 		//System.out.println("********************folder="+fdrenm);
-		GetWebmailAllMailCountResponse wfre=folderClient.getWebmailAllMailCountRequest(host, port, id, pass,fdrenm);
+		GetWebmailAllMailCountResponse wfre=webmailClient.getWebmailAllMailCountRequest(host, port, id, pass,fdrenm);
 		long mcount=wfre.getAllemailcount();
-		long end=10;
+		//long end=MailAccSetting.limitMail;
+		long end=Integer.parseInt(hs.getAttribute("limitMail").toString());
 		if(end>mcount)
 		{
 			end=mcount;
@@ -52,6 +54,33 @@ public class MailCountController {
 		{
 		inboxcnt="1&nbsp;-&nbsp;"+end+"&nbsp;of&nbsp;"+mcount;
 		}
+		inboxcnt+="$"+mcount;
+		return inboxcnt;
+	}
+	
+	
+	
+	
+	@RequestMapping(value = "/getDraftMailCount", method = RequestMethod.GET)
+	@ResponseBody
+	public String getDraftMailCount(ModelMap map, Principal principal,  HttpServletRequest request)
+	{
+		HttpSession hs=request.getSession();
+		String host=(String)hs.getAttribute("host");
+		String id=(String)hs.getAttribute("id");
+		String pass=(String)hs.getAttribute("pass");
+		String port=(String)hs.getAttribute("port");
+		String fdrenm="Drafts";
+		String inboxcnt="";
+		//System.out.println("********************folder="+fdrenm);
+		GetWebmailAllMailCountResponse wfre=webmailClient.getWebmailAllMailCountRequest(host, port, id, pass,fdrenm);
+		long mcount=wfre.getAllemailcount();
+		
+		if(mcount>0)
+		{
+			inboxcnt="("+ mcount +")";
+		}
+		
 		return inboxcnt;
 	}
 	
@@ -71,7 +100,7 @@ public class MailCountController {
 		String port=(String)hs.getAttribute("port");
 		String fdr=request.getParameter("fdr");
 		String inboxcnt="";
-		GetWebmailUnreadMailCountResponse wfre=folderClient.getWebmailUnreadMailCountRequest(host, port, id, pass,fdr);
+		GetWebmailUnreadMailCountResponse wfre=webmailClient.getWebmailUnreadMailCountRequest(host, port, id, pass,fdr);
 		int mcnt  =wfre.getUnreademailcount();
 		if(mcnt > 0)
 		{
@@ -81,4 +110,25 @@ public class MailCountController {
 		return inboxcnt;
 		
 	}
+	
+	@RequestMapping(value = "/getUnreadMailCountInbox", method = RequestMethod.GET)
+	@ResponseBody
+	public String getUnreadMailCountInbox(ModelMap map, Principal principal,  HttpServletRequest request)
+	{
+	
+		
+		HttpSession hs=request.getSession();
+		String host=(String)hs.getAttribute("host");
+		String id=(String)hs.getAttribute("id");
+		String pass=(String)hs.getAttribute("pass");
+		String port=(String)hs.getAttribute("port");
+		String fdr=request.getParameter("fdr");
+		
+		GetWebmailUnreadMailCountResponse wfre=webmailClient.getWebmailUnreadMailCountRequest(host, port, id, pass,fdr);
+		int mcnt  =wfre.getUnreademailcount();
+		
+		return ""+mcnt;
+		
+	}
+	
 }

@@ -1,10 +1,33 @@
 /* style sheets */
+.chat_input,.new_overflow{ position:relative;height:100%;width: 258px;}
+.chat_input_new {
+  position: absolute !important;
+  bottom: -14px !important;
+  text-decoration: none;
+}
+..ui-corner-all {
+  width: 10px !important;
+  /* float: left !important; */
+}
+.ui-icon-minusthick {
+  /* background-position: -64px -128px; */
+  width: 15px;
+  height: 24px;
+ /*  background: #ccc; */
+  display: block;
+  text-align: center;  font-size: 38px;
+  line-height: 18px;
+}
+.chat_minu {
+  float: right;
+  margin-left: 3px;text-decoration: none;
+}
 .ui-chatbox {
     /* position: fixed; */
     position: relative;
-    bottom:0;
+     bottom: 22px;
     padding: 2px;
-    background:  #CCCCCC;
+    /* background:  #CCCCCC; */
     z-index: 9999;
 }
 
@@ -34,6 +57,7 @@
     padding: 3px;
     border-top: 1px solid grey;
     overflow: hidden;
+    background: #fff none repeat scroll 0 0;
 }
 
 .ui-chatbox-input-box {
@@ -53,21 +77,28 @@
 }
 
 .ui-chatbox-msg {
-    margin-bottom: -15px;
-    margin-top: -6px;
+	
+	
+        /* margin-bottom: -15px; */
+    margin-top: 5px;
     float: left;
     clear: both;
-    /* Source: http://snipplr.com/view/10979/css-cross-browser-word-wrap */
-    white-space: pre-wrap;      /* CSS3 */
-    white-space: -moz-pre-wrap; /* Firefox */
-    white-space: -pre-wrap;     /* Opera <7 */
-    white-space: -o-pre-wrap;   /* Opera 7 */
-    word-wrap: break-word;      /* IE */
-	font-size:12px;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    font-size: 12px;
+    background: #CCE5FB;
+    border-radius: 5px;
+}
+.ui-chatbox-msg > p {
+       margin: 6px 6px;
 }
 /*--------------- NEW CSS FOR NEW DESIGN -------------*/
 .title_name{width: 203px;
 float: left;
 overflow: hidden;
 font-family: arial;
-font-size: 14px;/* text-transform: capitalize; */}
+font-size: 14px;/* text-transform: capitalize; */
+}

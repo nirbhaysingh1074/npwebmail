@@ -3,10 +3,22 @@ package webmail.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -19,44 +31,123 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import webmail.webservice.client.FolderClient;
+import com.sieve.manage.examples.ConnectAndListScripts;
+
+import webmail.bean.NPCompare;
+import webmail.bean.NPFolderCompare;
+import webmail.webservice.client.WebmailClient;
+import webmail.wsdl.AssignSinglePermissionResponse;
+import webmail.wsdl.GetWebmailFolderOtherResponse;
 import webmail.wsdl.GetWebmailFolderResponse;
+import webmail.wsdl.GetWebmailFolderSubscribedOtherResponse;
+import webmail.wsdl.GetWebmailFolderSubscribedResponse;
 import webmail.wsdl.GetWebmailImapquotaResponse;
 import webmail.wsdl.GetWebmailQuotaResponse;
 import webmail.wsdl.GetWebmailSubFolderResponse;
+import webmail.wsdl.GetWebmailSubFolderSubscribedOtherResponse;
+import webmail.wsdl.GetWebmailSubFolderSubscribedResponse;
 import webmail.wsdl.GetWebmailUnreadMailCountResponse;
 import webmail.wsdl.Imapquota;
+import webmail.wsdl.MailImapFolders;
+import webmail.wsdl.SubsImapFolders;
+import webmail.wsdl.SubsImapSubFolders;
 
 
 @Controller
 public class FolderController {
 
 	@Autowired
-	private FolderClient folderClient;
+	private WebmailClient webmailClient;
+		
+@RequestMapping(value = "/getWbmailfolderNew", method = RequestMethod.GET)
 	
-	
-	
-	@RequestMapping(value = "/getWbmailfolder", method = RequestMethod.GET)
-	@ResponseBody
-	public String listWebmailFolder(ModelMap map, Principal principal,
-			HttpServletRequest request) {
+	public String getWbmailfolderNew(ModelMap map, Principal principal, HttpServletRequest request) 
+	{
 		HttpSession hs=request.getSession();
 		String host=(String)hs.getAttribute("host");
 		String id=(String)hs.getAttribute("id");
 		String pass=(String)hs.getAttribute("pass");
 		String port=(String)hs.getAttribute("port");
 		String inboxcnt="";
-		GetWebmailUnreadMailCountResponse wfre=folderClient.getWebmailUnreadMailCountRequest(host, port, id, pass,"inbox");
+		GetWebmailUnreadMailCountResponse wfre=webmailClient.getWebmailUnreadMailCountRequest(host, port, id, pass,"inbox");
 		int mcnt  =wfre.getUnreademailcount();
 		if(mcnt > 0)
 		{
 			inboxcnt="("+mcnt+")";
 		}
 		
-		GetWebmailFolderResponse wfresponse=folderClient.getWebmailFolderRequest(host, id, pass);
+		//GetWebmailFolderSubscribedOtherResponse sfres=webmailClient.getWebmailFolderSubscribedOtherRequest(host, id, pass, "");
+	 	//List<SubsImapFolders> sflst= sfres.getGetSubFolder().getSubsFolderListReturn().getSubsFolderList();
+	 	
+	 	GetWebmailFolderOtherResponse sfres=webmailClient.getWebmailFolderOtherRequest(host, id, pass, "");
+	 	List<MailImapFolders> sflst= sfres.getGetSubFolder().getMailFolderListReturn().getMailFolderList();
+	 	//Collections.sort(sflst,new NPFolderCompare());
+	 	map.addAttribute("webmailClient", webmailClient);
+		map.addAttribute("imapfldrlst", sflst);
+		map.addAttribute("in_unread_cnt", inboxcnt);
+		
+		
+		return "webmailFolder";
+	}
+
+/*
+
+public List<SubsImapFolders> lFiles(List<SubsImapFolders> list, String path) {
+	
+	GetWebmailFolderSubscribedOtherResponse sfres=webmailClient.getWebmailFolderSubscribedOtherRequest(host, id, pass);
+ 	List<SubsImapFolders> sflst= sfres.getGetSubFolder().getSubsFolderListReturn().getSubsFolderList();
+	
+	         Folder[] f = store.getFolder(path).list();
+	         for(Folder fd:f)
+	  			{
+	        	 list.add(fd.getFullName());
+	        	 Folder t[]=fd.list();
+	   			if(t.length>0)
+	   			{
+	   				
+	   				lFiles(list, fd.getFullName());
+	   			}
+	   			else
+	   			{
+	   			 
+	   			}
+	   			
+	        
+	        	 
+	  			}
+	         
+	         
+	         
+	       
+
+	    
+	       
+	         
+
+return list;
+} */
+	
+	
+	@RequestMapping(value = "/getWbmailfolder", method = RequestMethod.GET)
+	@ResponseBody
+	public String listWebmailFolder(ModelMap map, Principal principal, HttpServletRequest request) {
+		HttpSession hs=request.getSession();
+		String host=(String)hs.getAttribute("host");
+		String id=(String)hs.getAttribute("id");
+		String pass=(String)hs.getAttribute("pass");
+		String port=(String)hs.getAttribute("port");
+		String inboxcnt="";
+		GetWebmailUnreadMailCountResponse wfre=webmailClient.getWebmailUnreadMailCountRequest(host, port, id, pass,"inbox");
+		int mcnt  =wfre.getUnreademailcount();
+		if(mcnt > 0)
+		{
+			inboxcnt="("+mcnt+")";
+		}
+		
+		GetWebmailFolderSubscribedResponse wfresponse=webmailClient.getWebmailFolderSubscribedRequest(host, id, pass);
 		String res="<ul class='left_margin' style='display: block;'>";
-		String myfdr=wfresponse.getGetWebmailFolder();
-		System.out.println("************************* webmail folder="+myfdr);
+		String myfdr=wfresponse.getGetWebmailFolderSubscribed();
+		System.out.println("*************************^^^^^ webmail folder="+myfdr);
 		String arr[]=myfdr.split(";");
 		System.out.println("************************* webmail folder lenth="+arr.length);
 		for(int i=0; i<arr.length; i++)
@@ -81,8 +172,8 @@ public class FolderController {
 					res+="<li class='bottom dcjq-parent-li'>";
 					res+="<a style='cursor: pointer;'  id='"+prm+"'  onclick='getWebmailInbox(this.id)' class='dcjq-parent active' style='padding-left: 9px;'>"+arr[i]+"<span class='dcjq-icon'></span></a>";
 					res+=" <ul style='display: block;' class='subfolder_onhover'>";
-					GetWebmailSubFolderResponse wsfr=folderClient.getWebmailSubFolderRequest(host, id, pass, arr[i]);
-					String mysubfdr=wsfr.getGetWebmailSubFolder();
+					GetWebmailSubFolderSubscribedResponse wsfr=webmailClient.getWebmailSubFolderSubscribedRequest(host, id, pass, arr[i]);
+					String mysubfdr=wsfr.getGetWebmailSubFolderSubscribed();
 					System.out.println("************************* webmail sub folder="+mysubfdr);
 					String subarr[]=mysubfdr.split(";");
 					String spath1=arr[i];
@@ -95,8 +186,8 @@ public class FolderController {
 							
 							res+="<li class='dcjq-parent-li'><a style='cursor: pointer;' id='"+prm+"'  onclick='getWebmailInbox(this.id)' class='dcjq-parent active sub_folder_inner'>"+subarr[j]+"<span class='dcjq-icon'></span></a>";
 							res+="<ul class='left_margin' style='display: block;'>";
-							GetWebmailSubFolderResponse wsfr1=folderClient.getWebmailSubFolderRequest(host, id, pass, spath1+"."+subarr[j]);
-							String mysubfdr1=wsfr1.getGetWebmailSubFolder();
+							GetWebmailSubFolderSubscribedResponse wsfr1=webmailClient.getWebmailSubFolderSubscribedRequest(host, id, pass, spath1+"."+subarr[j]);
+							String mysubfdr1=wsfr1.getGetWebmailSubFolderSubscribed();
 							System.out.println("************************* webmail sub folder="+mysubfdr1);
 							String subarr1[]=mysubfdr1.split(";");
 							String spath2=subarr[j];
@@ -127,20 +218,28 @@ public class FolderController {
 		
 		res+="</ul>";
 		
+		
+		
 		return res;
 		
 	}
-	
+
 	@RequestMapping(value = "/getWbmailsubfolder", method = RequestMethod.GET)
 	@ResponseBody
 	public String listWebmailQuota(ModelMap map, Principal principal,
 			HttpServletRequest request, @RequestParam String path) {
-		GetWebmailUnreadMailCountResponse wfresponse=folderClient.getWebmailUnreadMailCountRequest("mail.silvereye.in","993", "nirbhay@silvereye.in", "google@2009","inbox");
+		HttpSession hs=request.getSession();
+		String host=(String)hs.getAttribute("host");
+		String id=(String)hs.getAttribute("id");
+		String pass=(String)hs.getAttribute("pass");
+		String port=(String)hs.getAttribute("port");
+		GetWebmailUnreadMailCountResponse wfresponse=webmailClient.getWebmailUnreadMailCountRequest(host, port, id, pass,"inbox");
 		int iqt  =wfresponse.getUnreademailcount();
 		System.out.println("************************* unread="+iqt);
 		return ""+iqt;
 		
 	}
 	
+
 
 }

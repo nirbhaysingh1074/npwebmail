@@ -352,7 +352,7 @@ $(document).ready(function() {
 	
 	   ///SELECT BOX EVENT STARTED HERE
 	       var removeClass = true; 
-	       $('.select_box').click(function(){
+		   	$(document.body).on('click', '.select_box' ,function(){
 			        $('li.new_select_box').removeClass('new_select_box');
 			        $(this).addClass('new_select_box');
 					$('.update').addClass('select_icon');
@@ -362,7 +362,7 @@ $(document).ready(function() {
 
 			   });
 			  
-			$("html").click(function () {
+	$(document.body).on('click', 'html' ,function(){		  
               if (removeClass) 
 			      {
                    $('.select_box').removeClass('new_select_box');
@@ -374,7 +374,7 @@ $(document).ready(function() {
 	
 	/// SHARED OPTION HERE 
 	      // SHARED ICON
-		  $('.share').click(function(){
+		  	$(document.body).on('click', '.share' ,function(){
 			       
 				   if($('.share_option').css('display')=='none')
 				   
@@ -382,14 +382,13 @@ $(document).ready(function() {
 					   $('.share_option').css('display','block');
 					   $('.web_dialog_overlay').css('display','block');
 					   
-					   }
+				   }
 				   
 			  
 			  });    
 		
 		///    Cancel POP Up END HERE 
-		
-		$('.cancel_popup').click(function(){
+		$(document.body).on('click', '.cancel_popup' ,function(){
 			
 			         if($('.share_option').css('display')=='block')
 				   
@@ -405,7 +404,7 @@ $(document).ready(function() {
 	    
 	
 	    // USER SHERED 
-           $('.user_option').click(function(){
+		$(document.body).on('click', '.user_option' ,function(){
 			        
 					if($('.user_inner').css('display')=='none')
 					{
@@ -423,7 +422,7 @@ $(document).ready(function() {
 			   
 		/// Group Shared Option
 		
-		   $('.user_group').click(function(){
+				$(document.body).on('click', '.user_group' ,function(){
 
 			     if($('.group_inner').css('display')=='none')
 				 {
@@ -434,7 +433,7 @@ $(document).ready(function() {
 					 $('.user_details').removeClass('permissions_user');
 					 $('.group_details').addClass('permissions_group');
 					 $('.user_details').addClass('permi_user_display');
-					 }
+				 }
 					 
 			   
 			   });
@@ -442,7 +441,7 @@ $(document).ready(function() {
 	
 	
 	// LEFT PART DOCUMENT ONCLICK
-$('.content_left_block > ul >li').click(function(){
+		$(document.body).on('click', '.content_left_block > ul >li' ,function(){
 	
       if($('.subfolder_onhover').css('display')=='none')
 	  {
@@ -525,7 +524,7 @@ $('.content_left_block > ul >li').click(function(){
 	
 	
 	//Top
-	$('.right_tab').click( function(){
+		$(document.body).on('click', '.right_tab' ,function(){
 	
 		var opend=false;
 		if($(this).find('.icon_right').attr('class').indexOf('icon_right_minus')>-1)
@@ -553,8 +552,7 @@ $('.content_left_block > ul >li').click(function(){
 	);
 	
 	//Middle
-	$('.middle_tab').click(
-            function() {
+	$(document.body).on('click', '.middle_tab' ,function(){
 
                 var opend = true;
                 if ($(this).find('.icon_folder').attr('class').indexOf('folderminus') > -1)
@@ -585,7 +583,7 @@ $('.content_left_block > ul >li').click(function(){
 	
 	
 	///SHARED FOLDER ONLY
-	$('.shared_event').click(function(){
+		$(document.body).on('click', '.shared_event' ,function(){
 		
 	       if($('.shared_tab').css('display')=='none')
 		   {
@@ -598,8 +596,8 @@ $('.content_left_block > ul >li').click(function(){
 		
 		
 			///TRASH PAGES ONLY
-					$('.trash').click(function(){
-						
+				$(document.body).on('click', '.trash' ,function(){
+
 						   if($('.trash_tab').css('display')=='none')
 						   {
 							   $('.shared_tab').css('display','none');
@@ -612,7 +610,8 @@ $('.content_left_block > ul >li').click(function(){
 						
 						
 		/// FROM TAB STARED HERE 
-		$('.table_menu').click(function(){
+				$(document.body).on('click', '.table_menu' ,function(){
+					
 			     if($('.shared_trash').css('display')=='block')
 				 {
 					 
@@ -633,7 +632,7 @@ $('.content_left_block > ul >li').click(function(){
 	
 	//Bottom
 	var adjustChatHeight;
-    $('.tab_header').click(function() { 
+	$(document.body).on('click', '.tab_header' ,function(){
         var opend = false;
         if ($(this).find('.icon').attr('class').indexOf('icon_minus') > -1) {
             opend = true;
@@ -667,13 +666,14 @@ $('.content_left_block > ul >li').click(function(){
 		heightChatBox = $('.chat_box_inner').height() - adjustHeight;
 				
     });
-	$('.document_library').click(function() {
+	
+		$(document.body).on('click', '.document_library' ,function(){
 			$('#test').toggleClass('cheat_height_small');
 			$('#test').toggleClass('cheat_height_big');			
 	});
 	
 	// Folder View,List View,Left View,Bottom View
-	$('.user_images').click(function(){
+	$(document.body).on('click', '.user_images' ,function(){
 		
 		if($('.uparrowdiv').css('display')=='none')
 		{
@@ -692,7 +692,8 @@ $('.content_left_block > ul >li').click(function(){
 		
 		///Appoment Tab Started Here 
 		
-			$('.tab_menu_1').click(function() {
+			$(document.body).on('click', '.tab_menu_1' ,function(){
+
 			if($('.appoment_tab_1').css('display')=='none')
 			{
 				$('.appoment_tab_2').css('display','none');
@@ -703,7 +704,10 @@ $('.content_left_block > ul >li').click(function(){
 				}		
 	});
 	
-			$('.tab_menu_2').click(function() {
+	
+	
+	$(document.body).on('click', '.tab_menu_2' ,function(){
+	
 			if($('.appoment_tab_2').css('display')=='none')
 			{
 				$('.appoment_tab_2').css('display','block');
@@ -719,7 +723,8 @@ $('.content_left_block > ul >li').click(function(){
 	
 	/// Add New User 
 	
-	  $('.add_user_js').click(function(){
+	$(document.body).on('click', '.add_user_js' ,function(){
+	
 		     
 				   if($('.add_user_content').css('display')=='block')
 				   {
@@ -769,8 +774,7 @@ $('.content_left_block > ul >li').click(function(){
 	//Loged User Tab Stared Here 
 	   //Loged User 
 	   
-			   
-            $('.logged_user_js').click(function(){
+			   $(document.body).on('click', '.logged_user_js' ,function(){
 		       	
 				   if($('.loged_user_content').css('display')=='none')
 				   { 
@@ -796,8 +800,9 @@ $('.content_left_block > ul >li').click(function(){
 			  
 			  
 			  //// MORE OPTION STARED HERE 
-			  $('.more_click').click(function()
-			  {
+			  
+			  $(document.body).on('click', '.more_click' ,function(){
+
 				  if($('.more_option_event').css('display')=='none')
 				  {
 					  $('.header_menu').css('display','block');
@@ -813,9 +818,7 @@ $('.content_left_block > ul >li').click(function(){
 				  });
 				  
 				  
-				  
-				  $('.remove_menu').click(function()
-				  {
+				   $(document.body).on('click', '.remove_menu' ,function(){
 					  
 					  if($('.more_option_event').css('display')=='block')
 					  {
@@ -828,7 +831,7 @@ $('.content_left_block > ul >li').click(function(){
 				  
 				  
 				  /// Tab Calender 
-				  $('.calender_box').click( function(){
+				   $(document.body).on('click', '.calender_box' ,function(){
 					  
 					  $('.calender_div').addClass('calender_images')
 					  
@@ -837,8 +840,7 @@ $('.content_left_block > ul >li').click(function(){
 					  });
 				  
 				  
-				    $('.remove_menu').click(function()
-				  {
+				    $(document.body).on('click', '.remove_menu' ,function(){
 				  
 				  	if($('.more_option_event').css('display')=='none')
 					 {
@@ -851,7 +853,7 @@ $('.content_left_block > ul >li').click(function(){
 	    
 	   //User List
 	   
-	   	   	$('.User_List_js').click(function(){
+	    $(document.body).on('click', '.User_List_js' ,function(){
 		
 		       if($('.User_List_content').css('display')=='none')
 			   {
@@ -885,8 +887,7 @@ $('.content_left_block > ul >li').click(function(){
 		
 		
 			   //Group List
-	   
-	   	   	$('.group_List_js').click(function(){
+	     $(document.body).on('click', '.group_List_js' ,function(){
 
 		       if($('.group_List_content').css('display')=='none')
 			   {
@@ -910,7 +911,7 @@ $('.content_left_block > ul >li').click(function(){
 	   
 	   //User Profile
 	          
-			     	   	$('.user_profile_js').click(function(){
+			   $(document.body).on('click', '.user_profile_js' ,function(){
 		
 		       if($('.user_profile_content').css('display')=='none')
 			   {
@@ -936,7 +937,7 @@ $('.content_left_block > ul >li').click(function(){
 	   // Mini Type 
 	
 	         
-			   $('.mini_type_js').click(function(){
+			   $(document.body).on('click', '.mini_type_js' ,function(){
 		
 		       if($('.mini_type_content').css('display')=='none')
 			   {
@@ -958,8 +959,8 @@ $('.content_left_block > ul >li').click(function(){
 			   
 		// Mini Type 
 	
-	         
-			   $('.large_name').click(function(){
+	         	   $(document.body).on('click', '.large_name' ,function(){
+					   
 		       if($('.user_profile_content').css('display')=='none')
 			   {
 				   $('.user_profile_content').css('display','block');
@@ -985,8 +986,7 @@ $('.content_left_block > ul >li').click(function(){
 			   
 			   
 			   /// EDIT USER PAGES PROFILE (ADMIN PORTION)
-			   $('.edit_user').click(function()
-			   {
+			    $(document.body).on('click', '.edit_user' ,function(){
 			
 				   if($('.new_edit_pages').css('display')=='none'){
 							 $('.new_edit_pages').css('display','block');
@@ -999,7 +999,8 @@ $('.content_left_block > ul >li').click(function(){
 		          
 			/// Delete Pages EDITE PAGE ONLY 
 			
-			     $('.delete_new_user').click( function(){
+			  $(document.body).on('click', '.delete_new_user' ,function(){
+				  
 					 					confirm('Are You Sure !')
 						  $('.new_edit_pages').css('display','none');
 						 
@@ -1031,9 +1032,7 @@ $('.content_left_block > ul >li').click(function(){
 			   
 			   /// DELETE USER PROFILE PAGE EDITE (ADMIN)
 			   
-                $('.delete_user').click(function()
-				
-				{
+			     $(document.body).on('click', '.delete_user' ,function(){
 					
 					confirm('Are You Sure !')
 					
@@ -1063,7 +1062,7 @@ $('.content_left_block > ul >li').click(function(){
 						  
 						  
 						  		/// NEW EDIT PAGES  WHEN PROFILE PAGES VISIT
-					  $('.edit_user').click(function(){
+								$(document.body).on('click', '.edit_user' ,function(){
 					
 						  if($('.new_edit_pages').css('display')=='none')
 						  {
@@ -1076,10 +1075,7 @@ $('.content_left_block > ul >li').click(function(){
 						
 						  /// DELETE USER PROFILE PAGE (ADMIN)
 			   
-                $('.delete_user_1').click(function()
-				
-				{
-					
+			   $(document.body).on('click', '.delete_user_1' ,function(){
 					confirm('Are You Sure !')
 					
 					if($('.user_profile_content').css('display')=='block')
@@ -1093,9 +1089,8 @@ $('.content_left_block > ul >li').click(function(){
 						}});	
 
 				/// CANCEL THE USER PROFILE EDITE (ADMIN)
-				$('.cancel_user_profile').click(function()
-				
-				{
+				 $(document.body).on('click', '.cancel_user_profile' ,function(){
+
 					   if($('.user_profile_content').css('display')=='none')
 					   {
 						   
@@ -1108,7 +1103,8 @@ $('.content_left_block > ul >li').click(function(){
 						   }});
 						 
 				/// PROFILE PAGES TO EDITE PAGES
-				$('.edit_user').click(function(){
+				$(document.body).on('click', '.edit_user' ,function(){
+
 					
 					if($('.edit_user').css('display')=='none')
 					{
@@ -1122,7 +1118,8 @@ $('.content_left_block > ul >li').click(function(){
 						
 						
 				/// SHARED FOLDER STARTED HERE 
-				$('.shared_option').click(function(){
+				$(document.body).on('click', '.shared_option' ,function(){
+					
 					
 					if($('.hindden_tab_22').css('display')=='none'){
 						
@@ -1143,9 +1140,8 @@ $('.content_left_block > ul >li').click(function(){
 			   
 			   
 			   /// Select option Here 
-			   $('.heading').click(function()
+			   $(document.body).on('click', '.heading' ,function(){
 			   
-			       {
 					   if($('.hindden_tab').css('display')=='none')
 					   {
 						   $('.hindden_tab').css('display','block');
@@ -1155,9 +1151,8 @@ $('.content_left_block > ul >li').click(function(){
 			   );
 			   
 			   	   /// Select option Here 
-			   $('.heading').click(function()
-			   
-			       {
+				      $(document.body).on('click', '.heading' ,function(){
+
 					   if($('.hindden_tab').css('display')=='none')
 					   {
 						   $('.hindden_tab').css('display','block');
@@ -1168,10 +1163,8 @@ $('.content_left_block > ul >li').click(function(){
 			   
 			   
 			   
-			   
-			   $('.folder_icon').click(function()
-			   {
-				
+			    $(document.body).on('click', '.folder_icon' ,function(){
+
 				   $('.home').addClass('color_home');
 
 				   });
@@ -1197,7 +1190,7 @@ $('.content_left_block > ul >li').click(function(){
 
 
 
-//// POP UP BOX FOR SELECT (ACTIVE AND DEACTIVE)
+/*//// POP UP BOX FOR SELECT (ACTIVE AND DEACTIVE)
 function myFunction() {
     var x;
     if (confirm("Are you sure!") == true) {
@@ -1221,7 +1214,7 @@ function myFunction_decative() {
 }
 
 // POP UP BOX FOR ADD USER 
-
+*/
 $(document).ready(function() {
 
 	$(".tab_content_1").hide();
@@ -1662,12 +1655,19 @@ function userinformation(e)
 
         $('.user_information').css('display', 'block');
 		$('#search_form').css('display','none');
+		$('.more_product_content').css('display','none');
+		$('.user_noti_content').hide();
 
     }else {
          
 		 $('.search_form_1').css('display','none');
         $('.user_information').css('display', 'none');
-
+        if($('.more_product_content').css('display')=='block')
+        	{
+        	$('.more_product_content').css('display','none');
+        	
+        	}
+        $('.user_noti_content').hide();
     }
 	e.stopPropagation();
 	
@@ -1853,27 +1853,22 @@ event.stopPropagation();
 var popout=0;
 $(document).ready(function(e) {
 	
-    $('.cheat_row').mouseover(function(){	
-	    //$('.chat_info' ).offset({  top:$(this).offset().top - $(this).height(), left: $(this).offset().left + $(this).width()});
-		
-
-		//alert(window.scrollTop()+ window.innerHeight());
+ /*   $('.cheat_row').mouseover(function(){	
+	   
 		var height = $(this).position().top + $('.chat_info').height();
 		var innerheight =window.innerHeight + window.scrollY;
 		if( height > innerheight)
-		{	           
-			   $('.chat_info' ).position({ top:$(this).position().top - (height-innerheight), left: $(this).position().left + $(this).width()});
+		{	    alert(1);       
+			   $('.chat_info').position({ top:$(this).position().top - (height-innerheight), left: $(this).position().left + $(this).width()});
 			  		  
 		}
 		else
 		{
-			
-			//$('.chat_info' ).position({ top:$(this).position().top , left: $(this).position().left + $(this).width()});
-			$(".chat_info").css({ top:$(this).position().top   , left: $(this).position().left});
+				$(".chat_info").css({ top:$(this).position().top   , left: $(this).position().left});
 			
 		}
 		$('.chat_info').show();
-	});
+	});*/
 	
 	$('.chat_info').mouseout(function(){
 		popout=0;
@@ -1885,12 +1880,12 @@ $(document).ready(function(e) {
 		$('.chat_info').show();		
 	});
 	
-	$('.cheat_row').mouseout(function(){
+	/*$('.cheat_row').mouseout(function(){
 		if(popout==0)
 		{
 			$('.chat_info').css('display','none');
 		}
-	});
+	});*/
 	
 	// SECOND CHAT STARED HERE (CHAT SEARCH )
 	var adjustChatHeight;
@@ -1973,7 +1968,7 @@ $(document).ready(function(e) {
 	
     // CHAT OPTIONS(chat_h_right) STARED HERE
 	var adjust_height;
-	$('.chat_h_right').click(function(){
+	    $(document.body).on('click', '.chat_h_right' ,function(){
 		
 	    var chat_search_top = $(this).offset().top +  $('.chat_search').height();
 		var chat_search_1 = window.innerHeight + window.scrollY;   
@@ -2008,7 +2003,8 @@ $(document).ready(function(e) {
 	
 	
 			/// Chat Downarrow Only Option Here 
-	$('.h_drop').click(function(){
+				    $(document.body).on('click', '.h_drop' ,function(){
+
 		 var adjust_height = 0;
 		 var chat_search_top = $(this).offset().top +  $('.chat_search').height();
 		 var chat_search_1 = window.innerHeight + window.scrollY;
@@ -2043,7 +2039,8 @@ $(document).ready(function(e) {
 		/// CHAT DOWN ARROW EVENT
 
 //// Part 1
-$('.chat_down_main ul li').click(function(){
+    $(document.body).on('click', '.chat_down_main ul li' ,function(){
+
 	
 	if($('.chat_down_submenu').css('display')=='none'){
 		
@@ -2056,8 +2053,8 @@ $('.chat_down_main ul li').click(function(){
 );		
 
 /// Part 2
-$('.chat_main_menu').click(function(){
-	
+ $(document.body).on('click', '.chat_main_menu' ,function(){
+
 	if($('.chat_downarrow').css('display')=='none'){
 		$('.chat_downarrow').css('display','block');
 		$('.chat_down_submenu').css('display','none');
@@ -2069,7 +2066,7 @@ $('.chat_main_menu').click(function(){
 	});
 	
 	/// Chat Menu Stared Here 
-	$('.chat_status_menu').click(function(){
+	 $(document.body).on('click', '.chat_status_menu' ,function(){
        
 	   if($('.chat_status').css('display')=='none'){
 		   
@@ -2084,7 +2081,8 @@ $('.chat_main_menu').click(function(){
 	});
 		
 			/// Invites Stared Here 
-	$('.invites_menu').click(function(){
+			
+			 $(document.body).on('click', '.invites_menu' ,function(){
 	
 	   if($('.Blocked_status').css('display')=='none'){
 		   
@@ -2097,7 +2095,7 @@ $('.chat_main_menu').click(function(){
 	});
 	
 				/// Invites Stared Here 
-	$('.blocked_menu').click(function(){
+				$(document.body).on('click', '.blocked_menu' ,function(){
 	
 	   if($('.Invites_status').css('display')=='none'){
 		   
@@ -2111,7 +2109,7 @@ $('.chat_main_menu').click(function(){
 	});
 	
 					/// Invites Stared Here 
-	$('.share_your_menu').click(function(){
+					$(document.body).on('click', '.share_your_menu' ,function(){
 	
   if($('.Share_status').css('display')=='none'){
 		   
@@ -2124,7 +2122,7 @@ $('.chat_main_menu').click(function(){
 	});
 	
 	// CHAT SIGH OUT BOX 
-	$('.chat_out').click(function(){
+	$(document.body).on('click', '.chat_out' ,function(){
 		if($('.chat_inner_content').css('display')=='block')
 		{
 			
@@ -2141,7 +2139,8 @@ $('.chat_main_menu').click(function(){
 		
 		
 			// CHAT SIGN IN BOX 
-	$('.chat_sign_1_box').click(function(){
+				$(document.body).on('click', '.chat_sign_1_box' ,function(){
+
 		
 		if($('.chat_bottom_main').css('display')=='none'){
 			

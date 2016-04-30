@@ -15,10 +15,14 @@
 }
 
 .splitter_panel .hsplitter {
-    background-color: #5F5F5F;
-    cursor: row-resize;
-    z-index: 800;
-    height: 4px;
+  background-color: #ECECEC;
+  cursor: row-resize;
+  z-index: 800;
+  height: 2px;
+  width: 191px !important;
+ /*  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc; */
+  margin-bottom: 4px;
 }
 .splitter_panel .vsplitter.splitter-invisible,
 .splitter_panel .hsplitter.splitter-invisible {

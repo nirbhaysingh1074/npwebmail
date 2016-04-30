@@ -261,12 +261,12 @@ $("#togglePaletteOnly").spectrum({
 });
 
 $("#clickoutFiresChange").spectrum({
-    clickoutFiresChange: true,
     change: updateBorders
 });
 
 $("#clickoutDoesntFireChange").spectrum({
-    change: updateBorders
+    change: updateBorders,
+    clickoutFiresChange: false
 });
 
 $("#showInitial").spectrum({
@@ -350,7 +350,7 @@ $("#beforeShow").spectrum({
 });
 
 
-$("#custom").spectrum({
+$(".custom").spectrum({
     color: "#f00"
 });
 
@@ -447,7 +447,8 @@ $("#btn-toggle").click(function() {
     return false;
 });
 
-
+try
+{
 $('#toc').toc({
     'selectors': 'h2,h3', //elements to use as headings
     'container': '#docs', //element to find all selectors in
@@ -459,8 +460,12 @@ $('#toc').toc({
         return heading.id || prefix+i;
     }
 });
-
 prettyPrint();
+}
+catch (e) {
+	// TODO: handle exception
+}
+
 
 
 });
